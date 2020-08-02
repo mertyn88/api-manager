@@ -122,7 +122,7 @@ dependencies {
 
     //oauth
     //implementation("org.springframework.cloud:spring-cloud-starter-security:2.1.2.RELEASE")
-    implementation("org.springframework.cloud:spring-cloud-starter-oauth2:2.1.2.RELEASE")
+    //implementation("org.springframework.cloud:spring-cloud-starter-oauth2:2.1.2.RELEASE")
 
     // DEV 로그설정
     compile("org.bgee.log4jdbc-log4j2:log4jdbc-log4j2-jdbc4.1:1.16")
