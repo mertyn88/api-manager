@@ -4,6 +4,9 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -22,4 +25,8 @@ public class BoardModel {
     //private Integer replyDepth;     //댓글 깊이
     //private String regDate;         //게시판 등록일
     //private String chgDate;         //게시판 수정일
+
+    private String boardImgUrl;         //파일 경로
+    private String boardImgOriginNm;    //원본 파일 이름
+    private String boardImgDestinationNm;   //변환된 파일 이름
 }

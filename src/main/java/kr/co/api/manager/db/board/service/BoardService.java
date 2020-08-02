@@ -1,29 +1,27 @@
 package kr.co.api.manager.db.board.service;
 
-import kr.co.api.manager.db.board.mapper.BoardMapper;
 import kr.co.api.manager.db.board.model.BoardModel;
 import kr.co.api.manager.db.board.model.DataModel;
 import kr.co.api.manager.db.board.model.ReplyModel;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
-@Service
-@RequiredArgsConstructor
-public class BoardService {
+public interface BoardService {
 
-    private final BoardMapper boardMapper;
+    /**
+     *  게시판 글 가져오기
+     */
+    List<DataModel> selectBoard();
 
-    public List<DataModel> selectBoard() {
-        return boardMapper.selectBoard();
-    }
+    /**
+     * 게시판 글 삽입
+     */
+    int insertBoard(BoardModel boardModel, List<MultipartFile> multipartFiles) throws IOException;
 
-    public int insertBoard(BoardModel boardModel) {
-        return boardMapper.insertBoard(boardModel);
-    }
-
-    public int insertReply(ReplyModel replyModel) {
-        return boardMapper.insertReply(replyModel);
-    }
+    /**
+     * 게시판 글에 대한 댓글 삽입
+     */
+    int insertReply(ReplyModel replyModel);
 }

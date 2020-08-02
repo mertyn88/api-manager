@@ -9,9 +9,14 @@ import kr.co.api.manager.db.board.service.BoardService;
 import kr.co.api.manager.db.test.model.Test;
 import kr.co.api.manager.db.test.service.TestService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.print.attribute.standard.Media;
 import javax.validation.Valid;
+import java.io.IOException;
+import java.util.List;
 
 @RestController
 @RequestMapping("/board")
@@ -26,10 +31,12 @@ public class BoardController {
         return DataResponse.builder().data(boardService.selectBoard()).build();
     }
 
-    @PostMapping("/insertBoard")
+    //@PostMapping( path = "/insertBoard", headers = "application/json; charset=UTF-8" ,consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    //@PostMapping( path = "/insertBoard")
+    @PostMapping(value = "/insertBoard", consumes = { "multipart/form-data" })
     @ApiOperation(value = "INSERT 게시판", response = Integer.class)
-    public DataResponse insertBoard(@Valid @RequestBody BoardModel boardModel) {
-        return DataResponse.builder().data(boardService.insertBoard(boardModel)).build();
+    public DataResponse insertBoard(@Valid @ModelAttribute BoardModel boardModel, @RequestPart(value = "imgList", required = false) List<MultipartFile> imgList) throws IOException {
+        return DataResponse.builder().data(boardService.insertBoard(boardModel, imgList)).build();
     }
 
     @PostMapping("/insertReply")

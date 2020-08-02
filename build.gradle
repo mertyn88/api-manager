@@ -124,6 +124,10 @@ dependencies {
     //implementation("org.springframework.cloud:spring-cloud-starter-security:2.1.2.RELEASE")
     //implementation("org.springframework.cloud:spring-cloud-starter-oauth2:2.1.2.RELEASE")
 
+     //Multipart File Up&Download
+    implementation("org.apache.commons:commons-lang3:3.0")
+    implementation("commons-io:commons-io:2.5")
+
     // DEV 로그설정
     compile("org.bgee.log4jdbc-log4j2:log4jdbc-log4j2-jdbc4.1:1.16")
 }

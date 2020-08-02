@@ -18,6 +18,9 @@
               , reply_depth
               , reg_date
               , chg_date
+              , board_img_url
+              , board_img_origin_nm
+              , board_img_destination_nm
         FROM board
         WHERE 1 = 1
         ORDER BY board_no DESC, reply_sort ASC
@@ -25,7 +28,7 @@
     </select>
 
     <insert id="insertBoard" parameterType="kr.co.api.manager.db.board.model.BoardModel">
-        INSERT INTO board (board_kind, board_no, board_title, board_content, board_writer, reg_date, chg_date )
+        INSERT INTO board (board_kind, board_no, board_title, board_content, board_writer, reg_date, chg_date , board_img_url, board_img_origin_nm, board_img_destination_nm)
         VALUES (
                 #{boardKind}
                 , (SELECT IFNULL(MAX(b.board_no)+1, 0) FROM board b WHERE b.board_kind = #{boardKind})
@@ -34,6 +37,9 @@
                 , #{boardWriter}
                 , NOW()
                 , NOW()
+                , #{boardImgUrl}
+                , #{boardImgOriginNm}
+                , #{boardImgDestinationNm}
                 )
     </insert>
 
