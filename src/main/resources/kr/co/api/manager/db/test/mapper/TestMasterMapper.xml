@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kr.co.api.manager.db.test.mapper.TestMasterMapper">
+
+    <select id="selectTest" resultType="kr.co.api.manager.db.test.model.Test">
+        SELECT
+              id,
+              text,
+              reg_date
+        FROM test
+        WHERE 1 = 1
+        ORDER BY reg_date DESC
+        LIMIT 10
+    </select>
+
+    <insert id="insertTest" parameterType="kr.co.api.manager.db.test.model.Test">
+        INSERT INTO test (id, text, reg_date)
+        VALUES (
+                #{id}
+                , #{text}
+                , now()
+                )
+    </insert>
+
+    <insert id="updateTest" parameterType="kr.co.api.manager.db.test.model.Test">
+        UPDATE test
+        SET
+            text = #{text}
+        WHERE id = #{id}
+    </insert>
+
+    <delete id="deleteTest">
+        DELETE FROM test WHERE id = #{id}
+    </delete>
+</mapper>
