@@ -1,0 +1,60 @@
+server:
+  port: 8080
+  compression: # embedded tomcat 기동 시에 사용되는 설정. tomcat server 에서 실행할 경우는 server.xml 에 설정.
+    min-response-size: 1
+    enabled: true
+
+spring:
+  application:
+    name: api-manager
+  profiles:
+    active: local # default profile
+  security:
+    user:
+      name: flio  # security login id
+      password: flio  # security login password
+      roles:
+        - USER
+  mvc:
+    throw-exception-if-no-handler-found: true
+  resources:
+    add-mappings: false
+
+# logging config
+logging:
+  config: classpath:logback-spring.xml
+  file: ${spring.application.name}  # logback-spring.xml 에서 .log 붙여준다.
+
+---
+spring:
+  profiles: local
+  datasource:
+    master:
+      driver-class-name: com.mysql.jdbc.Driver
+      url: jdbc:mysql://flio.iptime.org:3306/flio?useUnicode=true&characterEncoding=utf-8&connectionCollation=utf8_bin&characterSetResults=utf8&autoReconnectForPools=true&serverTimezone=Asia/Seoul&useSSL=false&zeroDateTimeBehavior=convertToNull&connectTimeout=3000&socketTimeout=30000&allowPublicKeyRetrieval=true
+      username: flio
+      password:
+      initial-size: 1
+      max-total: 3
+      max-idle: 3
+      min-idle: 3
+      max-wait-millis: 3000
+      validation-query: select 1 from dual
+      test-on-borrow: true
+      validation-interval: 10000
+      default-auto-commit: true
+      pool-prepared-statements: true
+      max-open-prepared-statements: 1000
+
+# Max image upload
+servlet:
+  multipart:
+    file-size-threshold: 1MB
+    #location: C:/Temp
+    location: /Users/flio/project/api-manager/temp
+    max-file-size: 5MB
+    max-request-size: 5MB
+
+image:
+  #upload-path: C:\workspace\api-manager\image
+  upload-path: /Users/flio/project/api-manager/image
