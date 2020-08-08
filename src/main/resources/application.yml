@@ -28,6 +28,11 @@ logging:
 ---
 spring:
   profiles: local
+  http:
+    encoding:
+      charset: UTF-8
+      enabled: true
+      force: true
   datasource:
     master:
       driver-class-name: com.mysql.jdbc.Driver
@@ -58,3 +63,7 @@ servlet:
 image:
   #upload-path: C:\workspace\api-manager\image
   upload-path: /Users/flio/project/api-manager/image
+
+server:
+  tomcat:
+    uri-encoding: UTF-8

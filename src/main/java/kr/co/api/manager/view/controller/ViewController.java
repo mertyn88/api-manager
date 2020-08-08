@@ -1,11 +1,11 @@
-package kr.co.api.manager.db.test.controller;
+package kr.co.api.manager.view.controller;
 
 import io.swagger.annotations.ApiOperation;
-
 import kr.co.api.core.response.DataResponse;
 import kr.co.api.manager.db.test.model.Test;
 import kr.co.api.manager.db.test.service.TestService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -15,27 +15,15 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 @RestController
-@RequestMapping("/test")
+@RequestMapping("/temporary")
 @RequiredArgsConstructor
-public class TestController {
+@Slf4j
+public class ViewController {
 
-    private final TestService testService;
 
     private String htmlData;
 
-    @GetMapping("/selectTest")
-    @ApiOperation(value = "SELECT 테스트", response = Test.class)
-    public DataResponse selectTest() {
-        return DataResponse.builder().data(testService.selectTest()).build();
-    }
-
-    @PostMapping("/insertTest")
-    @ApiOperation(value = "INSERT 테스트", response = Integer.class)
-    public DataResponse insertTest(@Valid @RequestBody Test test) {
-        return DataResponse.builder().data(testService.insertTest(test)).build();
-    }
-
-    @GetMapping("/test")
+    @GetMapping("/view")
     public void test(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 
         // step1: set the content type
@@ -48,14 +36,11 @@ public class TestController {
         out.println(htmlData);
     }
 
-    @PostMapping("/test2")
-    @ApiOperation(value = "test2")
-    public void test2(@RequestParam(value = "htmlData") String test) throws IOException {
-
-        htmlData = test;
-
-        System.out.println("접근함 "+ test);
-
+    @PostMapping("/save")
+    @ApiOperation(value = "htmlData")
+    public void test2(@RequestParam(value = "htmlData") String htmlData) throws IOException {
+        this.htmlData = htmlData;
+        log.info("Save html data");
     }
 
 
