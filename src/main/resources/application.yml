@@ -38,7 +38,7 @@ spring:
       driver-class-name: com.mysql.jdbc.Driver
       url: jdbc:mysql://flio.iptime.org:3306/flio?useUnicode=true&characterEncoding=utf-8&connectionCollation=utf8_bin&characterSetResults=utf8&autoReconnectForPools=true&serverTimezone=Asia/Seoul&useSSL=false&zeroDateTimeBehavior=convertToNull&connectTimeout=3000&socketTimeout=30000&allowPublicKeyRetrieval=true
       username: flio
-      password:
+      password: flioflio
       initial-size: 1
       max-total: 3
       max-idle: 3

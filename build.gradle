@@ -79,7 +79,6 @@ configurations.all {
 
 // 공통 dependency 정의.
 dependencies {
-    //plus-starter
     annotationProcessor("org.projectlombok:lombok:${lombokVersion}")
     compileOnly("org.projectlombok:lombok:${lombokVersion}")
 
