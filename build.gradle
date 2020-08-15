@@ -117,7 +117,7 @@ dependencies {
     //spring security
     //implementation("org.springframework.security:spring-security-web:4.2.1")
     //implementation("org.springframework.security:spring-security-config:4.2.1")
-    implementation("org.springframework.boot:spring-boot-starter-security:${springBootVersion}")
+   // implementation("org.springframework.boot:spring-boot-starter-security:${springBootVersion}")
 
     //oauth
     //implementation("org.springframework.cloud:spring-cloud-starter-security:2.1.2.RELEASE")

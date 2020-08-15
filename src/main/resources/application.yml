@@ -9,12 +9,6 @@ spring:
     name: api-manager
   profiles:
     active: local # default profile
-  security:
-    user:
-      name: flio  # security login id
-      password: flio  # security login password
-      roles:
-        - USER
   mvc:
     throw-exception-if-no-handler-found: true
   resources:

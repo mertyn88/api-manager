@@ -3,6 +3,36 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
+<!--
+ 게시판 테이블
+CREATE TABLE `board` (
+  `board_seq` INT(11) NOT NULL AUTO_INCREMENT COMMENT '게시판 시퀀스',
+  `board_kind` ENUM('COMMUNITY','BOAST','SAMPLE1') COMMENT '게시판 종류',
+  `board_no` INT(10) NULL COMMENT '게시판 번호',
+  `board_title` VARCHAR(250) DEFAULT NULL COMMENT '게시판 제목',
+  `board_content` LONGTEXT COMMENT '게시판 내용',
+  `board_writer` VARCHAR(50) DEFAULT NULL COMMENT '게시판 작성자',
+  `board_img_url` VARCHAR(100) DEFAULT NULL COMMENT '게시판 이미지 파일 경로',
+  `board_img_origin_nm` VARCHAR(100) DEFAULT NULL COMMENT '게시판 이미지 원본 파일이름',
+  `board_img_destination_nm` VARCHAR(100) DEFAULT NULL COMMENT '게시판 이미지 변환 파일이름',
+  `reply_content` VARCHAR(500) DEFAULT NULL COMMENT '댓글 내용',
+  `reply_sort` INT(10) DEFAULT 0 COMMENT '댓글 정렬 번호',
+  `reply_depth` INT(10) DEFAULT 0 COMMENT '댓글 깊이',
+  `reg_date` DATETIME DEFAULT NULL COMMENT '게시판 등록일',
+  `chg_date` DATETIME DEFAULT NULL COMMENT '게시판 수정일',
+  PRIMARY KEY (`board_seq`)
+) COMMENT '게시판'
+;
+
+DROP TABLE board;
+
+SELECT * FROM board
+ORDER BY board_no DESC, reply_sort ASC
+;
+
+DELETE FROM board;
+-->
+
 <mapper namespace="kr.co.api.manager.db.board.mapper.BoardMapper">
 
     <select id="selectBoard" resultType="kr.co.api.manager.db.board.model.DataModel">
