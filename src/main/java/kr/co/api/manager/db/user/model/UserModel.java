@@ -10,9 +10,10 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 public class UserModel {
-    private Long uid;
+    private String uid;
     private String name;
     private String email;
     private String imageUrl;
     private String token;
 }
+
