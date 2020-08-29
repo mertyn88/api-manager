@@ -45,6 +45,17 @@ spring:
       pool-prepared-statements: true
       max-open-prepared-statements: 1000
 
+# Elasticsearch
+elastic:
+  host: flio.iptime.org
+  port: 9200
+  username: none
+  password: none
+  time-out: 60
+  size: 10
+  aggs-fields: keyword
+  indices: crawler
+
 # Max image upload
 servlet:
   multipart:

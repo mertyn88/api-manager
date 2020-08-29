@@ -27,7 +27,7 @@ public class SwaggerConfig {
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
                 .title("api-manager")
-                .description("디비테스트")
+                .description("Flio Api manager")
                 .version("1.0")
                 .build();
     }
