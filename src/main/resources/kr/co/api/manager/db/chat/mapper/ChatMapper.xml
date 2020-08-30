@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kr.co.api.manager.db.chat.mapper.ChatMapper">
+
+    <select id="selectMyChat" parameterType="kr.co.api.manager.db.chat.model.request.ChatRequestModel" resultType="kr.co.api.manager.db.chat.model.ChatModel">
+        SELECT
+            c.chat_seq
+            , p.product_name -- 화면 view
+            , (SELECT name FROM `user` WHERE uid = c.chat_source_uid ) AS chat_source_name -- 화면 view
+            , (SELECT name FROM `user` WHERE uid = c.chat_target_uid ) AS chat_target_name -- 화면 view
+            , cd.chat_date
+        FROM chat c
+        INNER JOIN product p ON c.product_id = p.product_id
+        LEFT JOIN
+        (
+            SELECT
+                cd.chat_seq
+                , MAX(cd.chat_date) AS chat_date
+            FROM chat_detail cd
+            GROUP BY cd.chat_seq
+        ) cd ON c.chat_seq  = cd.chat_seq
+        WHERE 1 = 1
+            AND c.chat_source_uid = #{uid}
+    </select>
+
+    <select id="selectMyChatDetail" parameterType="kr.co.api.manager.db.chat.model.request.ChatRequestModel" resultType="kr.co.api.manager.db.chat.model.ChatDetailModel">
+
+        SELECT
+              cd.chat_seq
+            , p.product_name
+            , cd.chat_source_message
+            , cd.chat_target_message
+            , cd.chat_date
+        FROM chat_detail cd
+        INNER JOIN chat c ON cd.chat_seq = c.chat_seq
+        INNER JOIN product p ON c.product_id = p.product_id
+        WHERE 1 = 1
+            AND cd.chat_seq = #{chatSeq}
+        ORDER BY cd.chat_date ASC
+    </select>
+
+    <insert id="insertMyChatDetail" parameterType="kr.co.api.manager.db.chat.model.ChatDetailModel">
+        INSERT INTO chat_detail (chat_seq, chat_source_message, chat_target_message)
+        VALUES (
+                #{chatSeq}
+                , #{chatSourceMessage}
+                , #{chatTargetMessage}
+                )
+    </insert>
+
+    <insert id="insertMyChat" parameterType="kr.co.api.manager.db.chat.model.ChatModel">
+        INSERT INTO chat (chat_source_uid, chat_target_uid, product_id)
+        VALUES(
+                #{chatSourceUid}
+                , #{chatTargetUid}
+                , #{productId}
+              )
+    </insert>
+
+
+</mapper>
