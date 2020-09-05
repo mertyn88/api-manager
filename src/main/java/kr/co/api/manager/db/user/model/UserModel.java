@@ -14,6 +14,7 @@ public class UserModel {
     private String name;
     private String email;
     private String imageUrl;
-    private String token;
+    private String userToken;
+    private String messageToken;
 }
 

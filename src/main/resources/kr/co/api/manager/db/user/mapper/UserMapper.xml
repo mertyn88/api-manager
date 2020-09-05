@@ -5,18 +5,19 @@
 
 <mapper namespace="kr.co.api.manager.db.user.mapper.UserMapper">
     <insert id="insertUser" parameterType="kr.co.api.manager.db.user.model.UserModel">
-        INSERT INTO `user` (`uid`, `name`, `email`, `image_url`, `token`, `reg_date`, `chg_date`)
+        INSERT INTO `flio_user` (`uid`, `name`, `email`, `image_url`, `user_token`, `message_token`, `reg_date`, `chg_date`)
         VALUES(
             #{uid}
             , #{name}
             , #{email}
             , #{imageUrl}
-            , #{token}
+            , #{userToken}
+            , #{messageToken}
             , NOW()
             , null
         )
         ON DUPLICATE KEY UPDATE
-        token  = #{token}
+        message_token  = #{messageToken}
         , chg_date = NOW()
     </insert>
 </mapper>

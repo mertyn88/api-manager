@@ -18,7 +18,7 @@ public class AggregationController {
 
 
     @GetMapping("/keyword")
-    @ApiOperation(value = "SELECT 게시판", response = AggregationModel.class)
+    @ApiOperation(value = "Elastic 카테고리 집계", response = AggregationModel.class)
     public DataResponse aggregationKeyword() {
         return DataResponse.builder().data(aggregationService.aggregationKeyword()).build();
     }

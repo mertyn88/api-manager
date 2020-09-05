@@ -53,27 +53,11 @@ public class AggregationServiceImpl implements AggregationService {
         /** 집계 결과 **/
         ParsedStringTerms agg = searchResponse.getAggregations().get("agg");
         for (ParsedStringTerms.ParsedBucket pb : (List<ParsedStringTerms.ParsedBucket>) agg.getBuckets()) {
-
-            System.out.println(pb.getKeyAsString());
-            System.out.println(pb.getDocCount());
-
             /** 검색 결과 저장 **/
             responseAggregation.add(new AggregationModel(){{
                 setKeyword(pb.getKeyAsString());
                 setCount(pb.getDocCount());
             }});
-
-
-            /*if (indexerPopularMap.get(key) != null) {
-                IndexerPopular popular = indexerPopularMap.get(key);
-                popular.setCount(popular.getCount() + pb.getDocCount());
-                indexerPopularMap.put(key, popular);
-            } else {
-                IndexerPopular indexerPopular = new IndexerPopular();
-                indexerPopular.setKeyword(pb.getKeyAsString());
-                indexerPopular.setCount(pb.getDocCount());
-                indexerPopularMap.put(key, indexerPopular);
-            }*/
         }
         return responseAggregation;
     }
