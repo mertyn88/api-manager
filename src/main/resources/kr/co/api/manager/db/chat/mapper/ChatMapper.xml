@@ -9,8 +9,8 @@
         SELECT
             c.chat_seq
             , p.product_name -- 화면 view
-            , (SELECT name FROM `user` WHERE uid = c.chat_source_uid ) AS chat_source_name -- 화면 view
-            , (SELECT name FROM `user` WHERE uid = c.chat_target_uid ) AS chat_target_name -- 화면 view
+            , (SELECT name FROM `flio_user` WHERE uid = c.chat_source_uid ) AS chat_source_name -- 화면 view
+            , (SELECT name FROM `flio_user` WHERE uid = c.chat_target_uid ) AS chat_target_name -- 화면 view
             , cd.chat_date
         FROM chat c
         INNER JOIN product p ON c.product_id = p.product_id
