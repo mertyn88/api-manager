@@ -1,9 +1,6 @@
 package kr.co.api.core.response;
 
-import kr.co.api.manager.db.test.model.Test;
 import lombok.Builder;
-
-import java.util.List;
 
 public class DataResponse extends ApiResponse {
 
