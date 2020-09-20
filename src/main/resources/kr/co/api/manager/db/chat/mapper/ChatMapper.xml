@@ -7,28 +7,79 @@
 
     <select id="selectMyChat" parameterType="kr.co.api.manager.db.chat.model.request.ChatRequestModel" resultType="kr.co.api.manager.db.chat.model.ChatModel">
         SELECT
-            c.chat_seq
-            , p.product_name -- 화면 view
-            , (SELECT name FROM `flio_user` WHERE uid = c.chat_source_uid ) AS chat_source_name -- 화면 view
-            , (SELECT name FROM `flio_user` WHERE uid = c.chat_target_uid ) AS chat_target_name -- 화면 view
-            , cd.chat_date
+        	 chat_seq
+			, @rownum:=@rownum+1 AS chat_index
+            , product_id
+            , product_name
+            , chat_source_uid
+            , chat_source_message_token
+            , chat_source_image_url
+            , chat_source_name
+            , chat_target_uid
+            , chat_target_message_token
+            , chat_target_image_url
+            , chat_target_name
+            , chat_last_message
+            , chat_last_date
+        FROM
+        (
+           SELECT
+            c.chat_seq					AS chat_seq
+            , p.product_id				AS product_id
+            , p.product_name			AS product_name
+            , c.chat_source_uid 		AS chat_source_uid
+            , source.message_token  	AS chat_source_message_token
+            , source.image_url			AS chat_source_image_url
+            , source.name 				AS chat_source_name
+            , c.chat_target_uid 		AS chat_target_uid
+            , target.message_token  	AS chat_target_message_token
+            , target.image_url 			AS chat_target_image_url
+            , target.name 				AS chat_target_name
+            , cd.chat_last_message		AS chat_last_message
+            , cd.chat_last_date			AS chat_last_date
         FROM chat c
         INNER JOIN product p ON c.product_id = p.product_id
-        LEFT JOIN
+        INNER JOIN flio_user source ON source.uid = c.chat_source_uid
+        INNER JOIN flio_user target ON target.uid = c.chat_target_uid
+        INNER JOIN
         (
+            SELECT
+            	a.chat_seq
+            	, a.chat_date AS chat_last_date
+            	, IFNULL(a.chat_source_message ,a.chat_target_message ) AS chat_last_message
+            FROM chat_detail a
+            INNER JOIN
+            (
             SELECT
                 cd.chat_seq
                 , MAX(cd.chat_date) AS chat_date
             FROM chat_detail cd
             GROUP BY cd.chat_seq
+            ) b ON a.chat_seq = b.chat_seq AND a.chat_date = b.chat_date
         ) cd ON c.chat_seq  = cd.chat_seq
         WHERE 1 = 1
-            AND c.chat_source_uid = #{uid}
+            AND
+            	(
+            	c.chat_source_uid = #{uid}
+            	OR
+            	c.chat_target_uid = #{uid}
+            	)
+        ORDER BY cd.chat_last_date DESC
+   	) A, (SELECT @rownum:=0) IDX
     </select>
 
     <select id="selectMyChatDetail" parameterType="kr.co.api.manager.db.chat.model.request.ChatRequestModel" resultType="kr.co.api.manager.db.chat.model.ChatDetailModel">
 
         SELECT
+            chat_seq
+            , @rownum:=@rownum+1 AS chat_index
+            , product_name
+            , chat_source_message
+            , chat_target_message
+            , chat_date
+        FROM
+        (
+         SELECT
               cd.chat_seq
             , p.product_name
             , cd.chat_source_message
@@ -40,6 +91,7 @@
         WHERE 1 = 1
             AND cd.chat_seq = #{chatSeq}
         ORDER BY cd.chat_date ASC
+        ) A , (SELECT @rownum:=0) IDX
     </select>
 
     <insert id="insertMyChatDetail" parameterType="kr.co.api.manager.db.chat.model.ChatDetailModel">

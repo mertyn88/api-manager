@@ -3,13 +3,16 @@ package kr.co.api.manager.message.model;
 import lombok.Data;
 
 @Data
-public class MessageModel {
+public class MessageRequestModel {
 
     private Integer chatSeq;
-    private String chatSourceMessage;
-    private String chatSourceImageUrl;
     private String chatSourceName;
-    private String chatTargetMessage;
-    private String chatTargetImageUrl;
+    private String chatSourceMessage;
+    private String chatSourceMessageToken;
+    private String chatSourceImageUrl;
+
     private String chatTargetName;
+    private String chatTargetMessage;
+    private String chatTargetMessageToken;
+    private String chatTargetImageUrl;
 }

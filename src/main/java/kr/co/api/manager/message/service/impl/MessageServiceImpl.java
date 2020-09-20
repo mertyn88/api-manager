@@ -1,5 +1,6 @@
 package kr.co.api.manager.message.service.impl;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 import kr.co.api.manager.db.chat.model.ChatDetailModel;
 import kr.co.api.manager.message.model.MessageSettingModel;
@@ -21,6 +22,7 @@ public class MessageServiceImpl implements MessageService {
     private final String FIRE_BASE_URL = "https://fcm.googleapis.com/fcm/send";
     private final String DB_INSERT_URL = "http://localhost:8080/chat/insertMyChatDetail";
 
+
     public <T> int getPostUrl(T model, String targetUrl, String authorization) throws IOException {
         URL url = new URL(targetUrl);
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
@@ -32,7 +34,7 @@ public class MessageServiceImpl implements MessageService {
         conn.setRequestProperty("Content-Type", MediaType.APPLICATION_JSON_VALUE);
         conn.setDoOutput(true);
 
-        String jsonData = new Gson().toJson(model);
+        String jsonData = new ObjectMapper().writeValueAsString(model);
         OutputStream os = conn.getOutputStream();
         os.write(jsonData.getBytes());
         os.flush();
@@ -49,7 +51,7 @@ public class MessageServiceImpl implements MessageService {
     @Override
     public Integer sendMessage(MessageSettingModel messageSettingModel) throws IOException {
 
-        int responseCode = getPostUrl(messageSettingModel, FIRE_BASE_URL, messageSettingModel.getFrom());
+        int responseCode = getPostUrl(messageSettingModel, FIRE_BASE_URL, "AAAAHjkhH_E:APA91bGuDoU6hDxqlsDwpor5jR0ariodMxZe0mx8m9KISRHFGu9FMLO7G4ajBCkSZrBpVPhQsmR4WYRQmdUPkL7eXwB1MmpWhLNaKHftz4rGZ4xNSXq7uNtxqBt2CNS-7Ixs0CyFcDh0");
 
         /** 성공 했을 경우 **/
         if(responseCode == HttpStatus.OK.value()){

@@ -138,7 +138,14 @@ dependencies {
     implementation("org.elasticsearch:elasticsearch:${elasticsearchVersion}")
 
     // gson
-    implementation("com.google.code.gson:gson:2.8.2");
+    implementation("com.google.code.gson:gson:2.8.2")
+
+    // jackson
+    implementation("com.fasterxml.jackson.core:jackson-core:2.9.10")
+    implementation("com.fasterxml.jackson.core:jackson-annotations:2.9.10")
+    implementation("com.fasterxml.jackson.core:jackson-databind:2.9.10")
+
+
 
 }
 

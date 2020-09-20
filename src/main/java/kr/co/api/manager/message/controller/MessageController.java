@@ -3,6 +3,7 @@ package kr.co.api.manager.message.controller;
 import io.swagger.annotations.ApiOperation;
 import kr.co.api.core.response.DataResponse;
 import kr.co.api.manager.message.model.MessageModel;
+import kr.co.api.manager.message.model.MessageRequestModel;
 import kr.co.api.manager.message.model.MessageSettingModel;
 import kr.co.api.manager.message.service.MessageService;
 import lombok.RequiredArgsConstructor;
@@ -23,7 +24,25 @@ public class MessageController {
 
     @PostMapping("/sendMessage")
     @ApiOperation(value = "SEND 채팅 메세지 전송", response = Integer.class)
-    public DataResponse sendMessage(@Valid @RequestBody MessageSettingModel messageSettingModel) throws IOException {
+    public DataResponse sendMessage(@Valid @RequestBody MessageRequestModel messageRequestModel) throws IOException {
+
+        /** 모델값 변환 **/
+        MessageSettingModel messageSettingModel = new MessageSettingModel(){{
+           setChatSeq(messageRequestModel.getChatSeq());
+           setTo(messageRequestModel.getChatSourceMessageToken() != null ? messageRequestModel.getChatSourceMessageToken() : messageRequestModel.getChatTargetMessageToken());
+           setPriority("high");
+           setData(
+                   new MessageModel(){{
+                       setChatSeq(messageRequestModel.getChatSeq());
+                       setChatSourceName(messageRequestModel.getChatSourceName());
+                       setChatSourceMessage(messageRequestModel.getChatSourceMessage());
+                       setChatSourceImageUrl(messageRequestModel.getChatSourceImageUrl());
+                       setChatTargetName(messageRequestModel.getChatTargetName());
+                       setChatTargetMessage(messageRequestModel.getChatTargetMessage());
+                       setChatTargetImageUrl(messageRequestModel.getChatTargetImageUrl());
+                   }}
+           );
+        }};
 
         //테스트
         /*
@@ -36,6 +55,8 @@ public class MessageController {
         messageModel.setChatTargetMessage("구매자가 쓰는 글");
         messageSettingModel.setData(messageModel);
         */
+        System.out.println(messageRequestModel);
+        System.out.println(messageSettingModel);
 
         return DataResponse.builder().data(messageService.sendMessage(messageSettingModel)).build();
     }
