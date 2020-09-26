@@ -99,4 +99,35 @@ DELETE FROM board;
     <delete id="deleteTest">
         DELETE FROM test WHERE id = #{id}
     </delete>
+
+    <insert id="insertProduct" parameterType="kr.co.api.manager.db.board.model.ProductModel">
+        INSERT INTO flio.product(
+                    product_name
+                    , title
+                    , content
+                    , status
+                    , sale_yn
+                    , classification
+                    , tag
+                    , image_url
+                    , display_yn
+                    , use_date
+                    , purchase_kind
+                    , purchase_price
+                    , box_yn
+                    , brand
+                    , purpose
+                    , model_no
+                    , serial_no
+                    , repair_yn
+                    , product_related_url
+                    , uid
+                    , reg_date
+        )
+        VALUES(
+                #{productName}, #{title}, #{content}, #{status}, 'S', #{classification}, #{tag}, #{imageUrl}
+                , 'Y', #{useDate}, #{purchaseKind}, #{purchasePrice}, #{boxYn}, #{brand}, #{purpose}, #{modelNo}
+                , #{serialNo}, #{repairYn}, #{productRelatedUrl}, #{uid}, CURRENT_TIMESTAMP);
+
+    </insert>
 </mapper>

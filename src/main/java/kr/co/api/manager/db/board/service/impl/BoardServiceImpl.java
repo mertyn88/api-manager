@@ -3,6 +3,7 @@ package kr.co.api.manager.db.board.service.impl;
 import kr.co.api.manager.db.board.mapper.BoardMapper;
 import kr.co.api.manager.db.board.model.BoardModel;
 import kr.co.api.manager.db.board.model.DataModel;
+import kr.co.api.manager.db.board.model.ProductModel;
 import kr.co.api.manager.db.board.model.ReplyModel;
 import kr.co.api.manager.db.board.service.BoardService;
 import lombok.Getter;
@@ -11,6 +12,8 @@ import lombok.Setter;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.dao.DataAccessException;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -130,4 +133,35 @@ public class BoardServiceImpl implements BoardService {
         private String boardDestinationImg;
     }
 
+
+    /**
+     * 상품글 올리기
+     * @param productModel
+     * @param multipartFiles
+     * @return
+     * @throws IOException
+     */
+    public int insertProduct(ProductModel productModel, List<MultipartFile> multipartFiles) throws IOException {
+
+        List<ImageVo> imageVoList = new ArrayList<>();
+        for(MultipartFile files : multipartFiles){
+            /**
+             * 파일 변환 프로세스
+             */
+            imageVoList.add(setTransferImage(files));
+        }
+
+        /**
+         * Set Image Info
+         */
+        productModel.setImageUrl(getUploadPath() + File.separator + imageVoList.stream().map(i -> i.getBoardDestinationImg()).collect(Collectors.joining(",")));
+
+        /** Insert **/
+        try{
+            boardMapper.insertProduct(productModel);
+        }catch (DataAccessException e){
+            e.printStackTrace();
+        }
+        return HttpStatus.OK.value();
+    }
 }
