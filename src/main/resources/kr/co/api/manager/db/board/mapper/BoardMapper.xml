@@ -109,6 +109,7 @@ DELETE FROM board;
                     , sale_yn
                     , classification
                     , tag
+                    , base_url
                     , image_url
                     , display_yn
                     , use_date
@@ -125,7 +126,7 @@ DELETE FROM board;
                     , reg_date
         )
         VALUES(
-                #{productName}, #{title}, #{content}, #{status}, 'S', #{classification}, #{tag}, #{imageUrl}
+                #{productName}, #{title}, #{content}, #{status}, 'S', #{classification}, #{tag}, #{baseUrl}, #{imageUrl}
                 , 'Y', #{useDate}, #{purchaseKind}, #{purchasePrice}, #{boxYn}, #{brand}, #{purpose}, #{modelNo}
                 , #{serialNo}, #{repairYn}, #{productRelatedUrl}, #{uid}, CURRENT_TIMESTAMP);
 

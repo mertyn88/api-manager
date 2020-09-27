@@ -123,7 +123,15 @@ public class BoardServiceImpl implements BoardService {
      * @return
      */
     private String getUploadPath(){
-        return basePath + File.separator + new SimpleDateFormat("yyyyMMdd").format(new Date());
+        return basePath + File.separator + getBasePath();
+    }
+
+    /**
+     * Base Url
+     * @return
+     */
+    private String getBasePath(){
+        return new SimpleDateFormat("yyyyMMdd").format(new Date());
     }
 
     @Setter
@@ -154,7 +162,8 @@ public class BoardServiceImpl implements BoardService {
         /**
          * Set Image Info
          */
-        productModel.setImageUrl(getUploadPath() + File.separator + imageVoList.stream().map(i -> i.getBoardDestinationImg()).collect(Collectors.joining(",")));
+        productModel.setBaseUrl(getBasePath());
+        productModel.setImageUrl(imageVoList.stream().map(i -> i.getBoardDestinationImg()).collect(Collectors.joining(",")));
 
         /** Insert **/
         try{

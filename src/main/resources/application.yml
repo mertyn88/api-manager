@@ -27,6 +27,13 @@ spring:
       charset: UTF-8
       enabled: true
       force: true
+  servlet:
+    multipart:
+      file-size-threshold: 10MB
+      #location: /data
+      location: /Users/flio/project/api-manager/temp
+      max-file-size: 50MB
+      max-request-size: 50MB
   datasource:
     master:
       driver-class-name: com.mysql.jdbc.Driver
@@ -56,14 +63,6 @@ elastic:
   aggs-fields: keyword
   indices: crawler
 
-# Max image upload
-servlet:
-  multipart:
-    file-size-threshold: 10MB
-    #location: /data
-    location: /Users/flio/project/api-manager/temp
-    max-file-size: 50MB
-    max-request-size: 50MB
 
 image:
   #upload-path: /data
@@ -73,3 +72,9 @@ server:
   tomcat:
     uri-encoding: UTF-8
     max-http-post-size: 6291456
+
+#
+resources:
+  #location: /data
+  location: /Users/flio/project/api-manager/image
+  uri_path: /image

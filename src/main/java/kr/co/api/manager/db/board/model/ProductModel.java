@@ -27,6 +27,7 @@ public class ProductModel {
     private String content;         //내용
     private String classification;  //분류
     private String tag;             //태그
+    private String baseUrl;         //이미지 베이스 URL
     private String imageUrl;       //이미지 URL
     private String displayYn;      //글 노출 여부(삭제기능)
     private String useDate;        //사용기간ß
