@@ -17,4 +17,5 @@ public interface BoardMapper {
     //int updateTest(Test test);
     //int deleteTest(int id);
     int insertProduct(ProductModel productModel);
+    List<ProductModel> selectProduct(String uid);
 }

@@ -31,4 +31,9 @@ public interface BoardService {
      */
     int insertProduct(ProductModel productModel, List<MultipartFile> multipartFiles) throws IOException;
 
+    /**
+     * 상품 글 가져오기
+     */
+    List<ProductModel> selectProduct(String uid);
+
 }

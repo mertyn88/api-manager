@@ -173,4 +173,12 @@ public class BoardServiceImpl implements BoardService {
         }
         return HttpStatus.OK.value();
     }
+
+    /**
+     * 상품 글 보기
+     * @return
+     */
+    public List<ProductModel> selectProduct(String uid) {
+        return boardMapper.selectProduct(uid);
+    }
 }

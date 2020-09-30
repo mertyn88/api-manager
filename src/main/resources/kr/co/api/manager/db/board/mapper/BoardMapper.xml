@@ -131,4 +131,33 @@ DELETE FROM board;
                 , #{serialNo}, #{repairYn}, #{productRelatedUrl}, #{uid}, CURRENT_TIMESTAMP);
 
     </insert>
+
+    <select id="selectProduct" resultType="kr.co.api.manager.db.board.model.ProductModel">
+        SELECT
+              product_name
+            , title
+            , content
+            , status
+            , sale_yn
+            , classification
+            , tag
+            , base_url
+            , image_url
+            , display_yn
+            , use_date
+            , purchase_kind
+            , purchase_price
+            , box_yn
+            , brand
+            , purpose
+            , model_no
+            , serial_no
+            , repair_yn
+            , product_related_url
+            , uid
+            , reg_date
+        FROM flio.product
+        WHERE 1 = 1
+            AND display_yn = 'Y'
+    </select>
 </mapper>

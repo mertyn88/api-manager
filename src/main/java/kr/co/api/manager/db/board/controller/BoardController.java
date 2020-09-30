@@ -51,4 +51,11 @@ public class BoardController {
         return DataResponse.builder().data(boardService.insertProduct(productModel, imgList)).build();
     }
 
+    /** 상품글 가져오기 **/
+    @GetMapping("/selectProduct")
+    @ApiOperation(value = "상품글 가져오기", response = ProductModel.class)
+    public DataResponse selectProduct(@Valid @RequestParam String uid) {
+        return DataResponse.builder().data(boardService.selectProduct(uid)).build();
+    }
+
 }
