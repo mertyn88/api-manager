@@ -5,5 +5,8 @@ import kr.co.api.manager.db.user.model.UserModel;
 
 @MasterConnection
 public interface UserMapper {
-    void insertUser(UserModel userModel);
+    int insertUser(UserModel userModel);
+    int updateLogoutUser(String uid);
+    boolean isLoginUser(String uid);
+    UserModel selectUser(String uid);
 }

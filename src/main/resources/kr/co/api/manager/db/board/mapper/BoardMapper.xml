@@ -132,7 +132,7 @@ DELETE FROM board;
 
     </insert>
 
-    <select id="selectProduct" resultType="kr.co.api.manager.db.board.model.ProductModel">
+    <select id="selectProduct" parameterType="String" resultType="kr.co.api.manager.db.board.model.ProductModel">
         SELECT
               product_name
             , title
@@ -159,5 +159,6 @@ DELETE FROM board;
         FROM flio.product
         WHERE 1 = 1
             AND display_yn = 'Y'
+            AND uid = #{uid}
     </select>
 </mapper>

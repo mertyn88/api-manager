@@ -14,7 +14,7 @@ public class UserModel {
     private String name;
     private String email;
     private String imageUrl;
-    private String userToken;
     private String messageToken;
+    private Boolean isLogin;
 }
 

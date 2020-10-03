@@ -5,19 +5,43 @@
 
 <mapper namespace="kr.co.api.manager.db.user.mapper.UserMapper">
     <insert id="insertUser" parameterType="kr.co.api.manager.db.user.model.UserModel">
-        INSERT INTO `flio_user` (`uid`, `name`, `email`, `image_url`, `user_token`, `message_token`, `reg_date`, `chg_date`)
+        INSERT INTO `flio_user` (`uid`, `name`, `email`, `image_url`, `message_token`, `reg_date`, `chg_date`)
         VALUES(
             #{uid}
             , #{name}
             , #{email}
             , #{imageUrl}
-            , #{userToken}
             , #{messageToken}
             , NOW()
             , null
         )
         ON DUPLICATE KEY UPDATE
         message_token  = #{messageToken}
+        , is_login = 'Y'
         , chg_date = NOW()
     </insert>
+    <select id="selectUser" parameterType="String" resultType="kr.co.api.manager.db.user.model.UserModel">
+        SELECT
+            `uid`
+            , `name`
+            , `email`
+            , `image_url`
+            , `message_token`
+            , `reg_date`
+            , `chg_date`
+        FROM flio_user
+        WHERE 1 = 1
+            AND uid = #{uid}
+    </select>
+    <select id="isLoginUser" parameterType="String" resultType="Boolean">
+        SELECT
+            IF(COUNT(*) = 1, 1, 0)
+        FROM `flio_user`
+        WHERE 1 = 1
+            AND uid = #{uid}
+            AND is_login = 'Y'
+    </select>
+    <update id="updateLogoutUser" parameterType="String">
+        UPDATE `flio_user` SET is_login = 'N' WHERE uid = #{uid}
+    </update>
 </mapper>

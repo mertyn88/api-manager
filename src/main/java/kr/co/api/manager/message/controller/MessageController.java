@@ -23,7 +23,7 @@ public class MessageController {
     private final MessageService messageService;
 
     @PostMapping("/sendMessage")
-    @ApiOperation(value = "SEND 채팅 메세지 전송", response = Integer.class)
+    @ApiOperation(value = "1:1 SEND 채팅 메세지 전송", response = Integer.class)
     public DataResponse sendMessage(@Valid @RequestBody MessageRequestModel messageRequestModel) throws IOException {
 
         /** 모델값 변환 **/
@@ -55,8 +55,6 @@ public class MessageController {
         messageModel.setChatTargetMessage("구매자가 쓰는 글");
         messageSettingModel.setData(messageModel);
         */
-        System.out.println(messageRequestModel);
-        System.out.println(messageSettingModel);
 
         return DataResponse.builder().data(messageService.sendMessage(messageSettingModel)).build();
     }
