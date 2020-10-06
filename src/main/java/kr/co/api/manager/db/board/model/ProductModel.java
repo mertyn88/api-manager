@@ -21,15 +21,19 @@ public class ProductModel {
     private String serialNo;       //시리얼넘버
     private String repairYn;       //제품수리이력여부
 
+    private String categoryDepth1;      //카테고리 1뎁스
+    private String categoryDepth2;      //카테고리 2뎁스
+    private String categoryOption;      //카테고리 옵션
+    private int recommendCnt;           //추천수
+    private int selectCnt;              //조회수
+
 
     /** 상품글정보 **/
     private String title;           //제목
     private String content;         //내용
-    private String classification;  //분류
     private String tag;             //태그
     private String baseUrl;         //이미지 베이스 URL
     private String imageUrl;       //이미지 URL
-    private String displayYn;      //글 노출 여부(삭제기능)
     private String useDate;        //사용기간ß
     private String purchaseKind;   //구매방법
     private String purchasePrice;  //구매당시가격

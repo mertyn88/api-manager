@@ -7,14 +7,10 @@ import kr.co.api.manager.db.board.model.DataModel;
 import kr.co.api.manager.db.board.model.ProductModel;
 import kr.co.api.manager.db.board.model.ReplyModel;
 import kr.co.api.manager.db.board.service.BoardService;
-import kr.co.api.manager.db.test.model.Test;
-import kr.co.api.manager.db.test.service.TestService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.print.attribute.standard.Media;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.util.List;
@@ -51,11 +47,45 @@ public class BoardController {
         return DataResponse.builder().data(boardService.insertProduct(productModel, imgList)).build();
     }
 
-    /** 상품글 가져오기 **/
-    @GetMapping("/selectProduct")
-    @ApiOperation(value = "상품글 가져오기", response = ProductModel.class)
-    public DataResponse selectProduct(@Valid @RequestParam String uid) {
-        return DataResponse.builder().data(boardService.selectProduct(uid)).build();
+    /** 장터 - 마이페이지 **/
+    @GetMapping("/mypageProduct")
+    @ApiOperation(value = "장터 - 마이페이지", response = ProductModel.class)
+    public DataResponse mypageProduct(@Valid @RequestParam String uid) {
+        return DataResponse.builder().data(boardService.mypageProduct(uid)).build();
     }
 
+    /** 장터 - 메인페이지 **/
+    @GetMapping("/mainProduct")
+    @ApiOperation(value = "장터 - 메인페이지", response = ProductModel.class)
+    public DataResponse mainProduct() {
+        return DataResponse.builder().data(boardService.mainProduct()).build();
+    }
+
+    /** 장터 - 추천매물 **/
+    @GetMapping("/recommendProduct")
+    @ApiOperation(value = "장터 - 추천매물", response = ProductModel.class)
+    public DataResponse recommendProduct(@Valid @RequestParam String categoryDepth1, @Valid @RequestParam String categoryDepth2) {
+        return DataResponse.builder().data(boardService.recommendProduct(categoryDepth1, categoryDepth2)).build();
+    }
+
+    /** 장터 - 상세물품페이지 **/
+    @GetMapping("/detailProduct")
+    @ApiOperation(value = "장터 - 상세물품페이지", response = ProductModel.class)
+    public DataResponse detailProduct(@Valid @RequestParam String productId) {
+        return DataResponse.builder().data(boardService.detailProduct(productId)).build();
+    }
+
+    /** 장터 - 상세물품페이지 - 관련매물 **/
+    @GetMapping("/purposeProduct")
+    @ApiOperation(value = "장터 - 상세물품페이지 - 관련매물", response = ProductModel.class)
+    public DataResponse purposeProduct(@Valid @RequestParam String purpose) {
+        return DataResponse.builder().data(boardService.purposeProduct(purpose)).build();
+    }
+
+    /** 장터태그, 장터내용 검색 **/
+    @GetMapping("/searchProduct")
+    @ApiOperation(value = "장터태그, 장터내용 검색", response = ProductModel.class)
+    public DataResponse searchProduct(@Valid @RequestParam String keyword) {
+        return DataResponse.builder().data(boardService.searchProduct(keyword)).build();
+    }
 }

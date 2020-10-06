@@ -54,6 +54,9 @@ public class UserServiceImpl implements UserService {
                     );
                 }};
 
+                System.out.println(loginUserModel);
+                System.out.println(userModel);
+
                 /** 새로운 데이터로 업데이트 **/
                 userMapper.insertUser(userModel);
 
@@ -68,8 +71,11 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public int updateLogoutUser(String uid) {
-        return 0;
+        try {
+            userMapper.updateLogoutUser(uid);
+        } catch (DataAccessException e) {
+            e.printStackTrace();
+        }
+        return HttpStatus.OK.value();
     }
-
-
 }

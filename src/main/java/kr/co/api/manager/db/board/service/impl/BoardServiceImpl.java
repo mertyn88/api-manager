@@ -175,10 +175,35 @@ public class BoardServiceImpl implements BoardService {
     }
 
     /**
-     * 상품 글 보기
+     * 상품 글 보기 - 마이페이지
      * @return
      */
-    public List<ProductModel> selectProduct(String uid) {
-        return boardMapper.selectProduct(uid);
+    public List<ProductModel> mypageProduct(String uid) {
+        return boardMapper.mypageProduct(uid);
+    }
+
+    @Override
+    public List<ProductModel> mainProduct() {
+        return boardMapper.mainProduct();
+    }
+
+    @Override
+    public List<ProductModel> recommendProduct(String categoryDepth1, String categoryDepth2) {
+        return boardMapper.recommendProduct(categoryDepth1, categoryDepth2);
+    }
+
+    @Override
+    public List<ProductModel> detailProduct(String productId) {
+        return boardMapper.detailProduct(productId);
+    }
+
+    @Override
+    public List<ProductModel> purposeProduct(String purpose) {
+        return boardMapper.purposeProduct(purpose);
+    }
+
+    @Override
+    public List<ProductModel> searchProduct(String keyword) {
+        return boardMapper.searchProduct(keyword);
     }
 }

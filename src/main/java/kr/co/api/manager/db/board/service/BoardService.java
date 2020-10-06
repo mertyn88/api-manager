@@ -31,9 +31,22 @@ public interface BoardService {
      */
     int insertProduct(ProductModel productModel, List<MultipartFile> multipartFiles) throws IOException;
 
-    /**
-     * 상품 글 가져오기
-     */
-    List<ProductModel> selectProduct(String uid);
+    /** 장터 - 마이페이지 **/
+    List<ProductModel> mypageProduct(String uid);
+
+    /** 장터 - 메인페이지 **/
+    List<ProductModel> mainProduct();
+
+    /** 장터 - 추천매물 **/
+    List<ProductModel> recommendProduct(String categoryDepth1, String categoryDepth2);
+
+    /** 장터 - 상세물품페이지 **/
+    List<ProductModel> detailProduct(String productId);
+
+    /** 장터 - 상세물품페이지 - 관련매물 **/
+    List<ProductModel> purposeProduct(String purpose);
+
+    /** 장터태그, 장터내용 검색 **/
+    List<ProductModel> searchProduct(String keyword);
 
 }

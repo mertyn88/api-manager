@@ -3,36 +3,6 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<!--
- 게시판 테이블
-CREATE TABLE `board` (
-  `board_seq` INT(11) NOT NULL AUTO_INCREMENT COMMENT '게시판 시퀀스',
-  `board_kind` ENUM('COMMUNITY','BOAST','SAMPLE1') COMMENT '게시판 종류',
-  `board_no` INT(10) NULL COMMENT '게시판 번호',
-  `board_title` VARCHAR(250) DEFAULT NULL COMMENT '게시판 제목',
-  `board_content` LONGTEXT COMMENT '게시판 내용',
-  `board_writer` VARCHAR(50) DEFAULT NULL COMMENT '게시판 작성자',
-  `board_img_url` VARCHAR(100) DEFAULT NULL COMMENT '게시판 이미지 파일 경로',
-  `board_img_origin_nm` VARCHAR(100) DEFAULT NULL COMMENT '게시판 이미지 원본 파일이름',
-  `board_img_destination_nm` VARCHAR(100) DEFAULT NULL COMMENT '게시판 이미지 변환 파일이름',
-  `reply_content` VARCHAR(500) DEFAULT NULL COMMENT '댓글 내용',
-  `reply_sort` INT(10) DEFAULT 0 COMMENT '댓글 정렬 번호',
-  `reply_depth` INT(10) DEFAULT 0 COMMENT '댓글 깊이',
-  `reg_date` DATETIME DEFAULT NULL COMMENT '게시판 등록일',
-  `chg_date` DATETIME DEFAULT NULL COMMENT '게시판 수정일',
-  PRIMARY KEY (`board_seq`)
-) COMMENT '게시판'
-;
-
-DROP TABLE board;
-
-SELECT * FROM board
-ORDER BY board_no DESC, reply_sort ASC
-;
-
-DELETE FROM board;
--->
-
 <mapper namespace="kr.co.api.manager.db.board.mapper.BoardMapper">
 
     <select id="selectBoard" resultType="kr.co.api.manager.db.board.model.DataModel">
@@ -105,13 +75,14 @@ DELETE FROM board;
                     product_name
                     , title
                     , content
+                    , caregory_depth1
+                    , caregory_depth2
+                    , caregory_option
                     , status
                     , sale_yn
-                    , classification
                     , tag
                     , base_url
                     , image_url
-                    , display_yn
                     , use_date
                     , purchase_kind
                     , purchase_price
@@ -126,24 +97,47 @@ DELETE FROM board;
                     , reg_date
         )
         VALUES(
-                #{productName}, #{title}, #{content}, #{status}, 'S', #{classification}, #{tag}, #{baseUrl}, #{imageUrl}
-                , 'Y', #{useDate}, #{purchaseKind}, #{purchasePrice}, #{boxYn}, #{brand}, #{purpose}, #{modelNo}
-                , #{serialNo}, #{repairYn}, #{productRelatedUrl}, #{uid}, CURRENT_TIMESTAMP);
-
+                #{productName}
+                , #{title}
+                , #{content}
+                , #{caregoryDepth1}
+                , #{caregoryDepth2}
+                , #{caregoryOption}
+                , #{status}
+                , 'S'
+                , #{tag}
+                , #{baseUrl}
+                , #{imageUrl}
+                , #{useDate}
+                , #{purchaseKind}
+                , #{purchasePrice}
+                , #{boxYn}
+                , #{brand}
+                , #{purpose}
+                , #{modelNo}
+                , #{serialNo}
+                , #{repairYn}
+                , #{productRelatedUrl}
+                , #{uid}
+                , CURRENT_TIMESTAMP);
     </insert>
 
-    <select id="selectProduct" parameterType="String" resultType="kr.co.api.manager.db.board.model.ProductModel">
-        SELECT
-              product_name
+    <!-- product select field -->
+    <sql id="productField">
+            product_id
+            , product_name
             , title
             , content
+            , caregory_depth1
+            , caregory_depth2
+            , caregory_option
+            , recommend_cnt
+            , select_cnt
             , status
             , sale_yn
-            , classification
             , tag
             , base_url
             , image_url
-            , display_yn
             , use_date
             , purchase_kind
             , purchase_price
@@ -156,9 +150,75 @@ DELETE FROM board;
             , product_related_url
             , uid
             , reg_date
+    </sql>
+
+    <!-- 마이페이지 -->
+    <select id="mypageProduct" parameterType="String" resultType="kr.co.api.manager.db.board.model.ProductModel">
+        SELECT
+            <include refid="productField" />
         FROM flio.product
         WHERE 1 = 1
-            AND display_yn = 'Y'
             AND uid = #{uid}
+        ORDER BY recommend_cnt DESC, select_cnt DESC, reg_date DESC
     </select>
+
+    <!-- 메인페이지 -->
+    <select id="mainProduct" resultType="kr.co.api.manager.db.board.model.ProductModel">
+        SELECT
+            <include refid="productField" />
+        FROM flio.product
+        WHERE 1 = 1
+        ORDER BY recommend_cnt DESC, select_cnt DESC, reg_date DESC
+    </select>
+
+    <!-- 추천매물 -->
+    <select id="recommendProduct" parameterType="String" resultType="kr.co.api.manager.db.board.model.ProductModel">
+        SELECT
+            <include refid="productField" />
+        FROM flio.product
+        WHERE 1 = 1
+            AND category_depth1 = #{categoryDepth1}
+            <if test="categoryDepth2 != null">
+                AND category_depth2 = #{categoryDepth2}
+            </if>
+        ORDER BY recommend_cnt DESC, select_cnt DESC, reg_date DESC
+    </select>
+
+    <!-- 상세물품페이지 -->
+    <select id="detailProduct" parameterType="String" resultType="kr.co.api.manager.db.board.model.ProductModel">
+        SELECT
+            <include refid="productField" />
+        FROM flio.product
+        WHERE 1 = 1
+            AND product_id = #{productId}
+    </select>
+
+    <!-- 상세물품페이지 관련매물 -->
+    <select id="purposeProduct" parameterType="String" resultType="kr.co.api.manager.db.board.model.ProductModel">
+        SELECT
+            <include refid="productField" />
+        FROM flio.product
+        WHERE 1 = 1
+            AND purpose = #{purpose}
+        ORDER BY recommend_cnt DESC, select_cnt DESC, reg_date DESC
+    </select>
+
+
+    <!-- 장터태그 & 장터내용 검색 -->
+    <select id="searchProduct" parameterType="String" resultType="kr.co.api.manager.db.board.model.ProductModel">
+        SELECT
+            <include refid="productField" />
+        FROM flio.product
+        WHERE 1 = 1
+            AND
+                (
+                    tag LIKE CONCAT('%', #{keyword}, '%')
+                    OR
+                    content LIKE CONCAT('%', #{keyword}, '%')
+                )
+        ORDER BY recommend_cnt DESC, select_cnt DESC, reg_date DESC
+    </select>
+
+    <!-- 인증 검색 / 테이블 미구현 -->
+    <!-- 행사 검색 / 테이블 미구현 -->
 </mapper>
