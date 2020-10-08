@@ -16,4 +16,6 @@ public interface ChatMapper {
     int insertMyChatDetail(ChatDetailModel chatDetailModel);
 
     int insertMyChat(ChatModel chatModel);
+
+    ChatModel selectChatSeq(ChatModel chatModel);
 }

@@ -75,9 +75,9 @@
                     product_name
                     , title
                     , content
-                    , caregory_depth1
-                    , caregory_depth2
-                    , caregory_option
+                    , category_depth1
+                    , category_depth2
+                    , category_option
                     , status
                     , sale_yn
                     , tag
@@ -100,9 +100,9 @@
                 #{productName}
                 , #{title}
                 , #{content}
-                , #{caregoryDepth1}
-                , #{caregoryDepth2}
-                , #{caregoryOption}
+                , #{categoryDepth1}
+                , #{categoryDepth2}
+                , #{categoryOption}
                 , #{status}
                 , 'S'
                 , #{tag}
@@ -124,83 +124,87 @@
 
     <!-- product select field -->
     <sql id="productField">
-            product_id
-            , product_name
-            , title
-            , content
-            , caregory_depth1
-            , caregory_depth2
-            , caregory_option
-            , recommend_cnt
-            , select_cnt
-            , status
-            , sale_yn
-            , tag
-            , base_url
-            , image_url
-            , use_date
-            , purchase_kind
-            , purchase_price
-            , box_yn
-            , brand
-            , purpose
-            , model_no
-            , serial_no
-            , repair_yn
-            , product_related_url
-            , uid
-            , reg_date
+            pd.product_id
+            , pd.product_name
+            , pd.product_price
+            , pd.title
+            , pd.content
+            , pd.category_depth1
+            , pd.category_depth2
+            , pd.category_option
+            , pd.recommend_cnt
+            , pd.select_cnt
+            , pd.status
+            , pd.sale_yn
+            , pd.tag
+            , pd.base_url
+            , pd.image_url
+            , pd.use_date
+            , pd.purchase_kind
+            , pd.purchase_price
+            , pd.box_yn
+            , pd.brand
+            , pd.purpose
+            , pd.model_no
+            , pd.serial_no
+            , pd.repair_yn
+            , pd.product_related_url
+            , pd.uid
+            , pd.reg_date
     </sql>
 
     <!-- 마이페이지 -->
     <select id="mypageProduct" parameterType="String" resultType="kr.co.api.manager.db.board.model.ProductModel">
         SELECT
             <include refid="productField" />
-        FROM flio.product
+        FROM flio.product pd
         WHERE 1 = 1
-            AND uid = #{uid}
-        ORDER BY recommend_cnt DESC, select_cnt DESC, reg_date DESC
+            AND pd.uid = #{uid}
+        ORDER BY pd.recommend_cnt DESC, pd.select_cnt DESC, pd.reg_date DESC
     </select>
 
     <!-- 메인페이지 -->
     <select id="mainProduct" resultType="kr.co.api.manager.db.board.model.ProductModel">
         SELECT
             <include refid="productField" />
-        FROM flio.product
+        FROM flio.product pd
         WHERE 1 = 1
-        ORDER BY recommend_cnt DESC, select_cnt DESC, reg_date DESC
+        ORDER BY pd.recommend_cnt DESC, pd.select_cnt DESC, pd.reg_date DESC
     </select>
 
     <!-- 추천매물 -->
     <select id="recommendProduct" parameterType="String" resultType="kr.co.api.manager.db.board.model.ProductModel">
         SELECT
             <include refid="productField" />
-        FROM flio.product
+        FROM flio.product pd
         WHERE 1 = 1
-            AND category_depth1 = #{categoryDepth1}
+            AND pd.category_depth1 = #{categoryDepth1}
             <if test="categoryDepth2 != null">
-                AND category_depth2 = #{categoryDepth2}
+                AND pd.category_depth2 = #{categoryDepth2}
             </if>
-        ORDER BY recommend_cnt DESC, select_cnt DESC, reg_date DESC
+        ORDER BY pd.recommend_cnt DESC, pd.select_cnt DESC, pd.reg_date DESC
     </select>
 
     <!-- 상세물품페이지 -->
     <select id="detailProduct" parameterType="String" resultType="kr.co.api.manager.db.board.model.ProductModel">
         SELECT
             <include refid="productField" />
-        FROM flio.product
+            , fu.image_url AS user_image_url
+            , fu.name      AS user_name
+        FROM flio.product pd
+        INNER JOIN flio.flio_user fu ON pd.uid = fu.uid
         WHERE 1 = 1
-            AND product_id = #{productId}
+            AND pd.product_id = #{productId}
     </select>
 
     <!-- 상세물품페이지 관련매물 -->
     <select id="purposeProduct" parameterType="String" resultType="kr.co.api.manager.db.board.model.ProductModel">
         SELECT
             <include refid="productField" />
-        FROM flio.product
+        FROM flio.product pd
         WHERE 1 = 1
-            AND purpose = #{purpose}
-        ORDER BY recommend_cnt DESC, select_cnt DESC, reg_date DESC
+            AND pd.purpose = #{purpose}
+        ORDER BY pd.recommend_cnt DESC, pd.select_cnt DESC, pd.reg_date DESC
     </select>
 
 
@@ -208,15 +212,15 @@
     <select id="searchProduct" parameterType="String" resultType="kr.co.api.manager.db.board.model.ProductModel">
         SELECT
             <include refid="productField" />
-        FROM flio.product
+        FROM flio.product pd
         WHERE 1 = 1
             AND
                 (
-                    tag LIKE CONCAT('%', #{keyword}, '%')
+                    pd.tag LIKE CONCAT('%', #{keyword}, '%')
                     OR
-                    content LIKE CONCAT('%', #{keyword}, '%')
+                    pd.content LIKE CONCAT('%', #{keyword}, '%')
                 )
-        ORDER BY recommend_cnt DESC, select_cnt DESC, reg_date DESC
+        ORDER BY pd.recommend_cnt DESC, pd.select_cnt DESC, pd.reg_date DESC
     </select>
 
     <!-- 인증 검색 / 테이블 미구현 -->

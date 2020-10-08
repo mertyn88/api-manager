@@ -41,7 +41,7 @@
         INNER JOIN product p ON c.product_id = p.product_id
         INNER JOIN flio_user source ON source.uid = c.chat_source_uid
         INNER JOIN flio_user target ON target.uid = c.chat_target_uid
-        INNER JOIN
+        LEFT JOIN
         (
             SELECT
             	a.chat_seq
@@ -104,13 +104,36 @@
     </insert>
 
     <insert id="insertMyChat" parameterType="kr.co.api.manager.db.chat.model.ChatModel">
-        INSERT INTO chat (chat_source_uid, chat_target_uid, product_id)
+        INSERT INTO chat (chat_seq, chat_source_uid, chat_target_uid, product_id)
         VALUES(
-                #{chatSourceUid}
+                (SELECT IFNULL(MAX(b.chat_seq)+1, 1) FROM chat b)
+                , #{chatSourceUid}
                 , #{chatTargetUid}
                 , #{productId}
               )
+        ON DUPLICATE KEY UPDATE
+        chat_seq = (
+        SELECT t.chat_seq
+        FROM (
+            SELECT t.chat_seq FROM chat t
+            WHERE t.chat_source_uid = #{chatSourceUid}
+                AND t.chat_target_uid = #{chatTargetUid}
+                AND t.product_id = #{productId}) AS t
+        )
     </insert>
+
+    <select id="selectChatSeq" parameterType="kr.co.api.manager.db.chat.model.ChatModel" resultType="kr.co.api.manager.db.chat.model.ChatModel">
+        SELECT
+        	 c.chat_seq
+        	 , source.message_token AS chat_source_message_token
+        	 , target.message_token AS chat_target_message_token
+        FROM chat c
+        INNER JOIN flio_user source ON source.uid = c.chat_source_uid
+        INNER JOIN flio_user target ON target.uid = c.chat_target_uid
+        WHERE c.chat_source_uid = #{chatSourceUid}
+            AND c.chat_target_uid = #{chatTargetUid}
+            AND c.product_id = #{productId}
+    </select>
 
 
 </mapper>

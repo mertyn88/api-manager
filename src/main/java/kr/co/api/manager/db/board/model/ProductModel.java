@@ -14,6 +14,7 @@ public class ProductModel {
     /** 상품정보 **/
     private Integer productId;    //물품 ID
     private String productName;    //물품 명
+    private Integer productPrice;
     private String status;  //물품 상태
     private String saleYn; //물품 판매여부(Y: 판매완료, R: 예약중, S: 판매중)
     private String brand;           //제조사이름
@@ -45,5 +46,8 @@ public class ProductModel {
     private String uid;         //판매자ID
     private String regDate;    //등록날짜
     private String chgDate;    //변경날짜
+    private String userImageUrl;
+    private String userName;
+
 
 }

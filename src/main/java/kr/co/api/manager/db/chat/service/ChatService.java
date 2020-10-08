@@ -11,6 +11,6 @@ public interface ChatService {
 
     List<ChatModel> selectMyChat(ChatRequestModel chatRequestModel);
     List<ChatDetailModel> selectMyChatDetail(ChatRequestModel chatRequestModel);
-    int insertMyChat (ChatModel chatModel);
+    ChatModel insertMyChat (ChatModel chatModel);
     int insertMyChatDetail (ChatDetailModel chatDetailModel);
 }

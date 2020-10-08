@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kr.co.api.manager.db.favorite.mapper.FavoriteMapper">
+    <insert id="switchFavorite" parameterType="kr.co.api.manager.db.favorite.model.FavoriteModel">
+        INSERT INTO `favorite` (`uid`, `product_id`)
+        VALUES(
+            #{uid}
+            , #{productId}
+        )
+        ON DUPLICATE KEY UPDATE
+        is_favorite = CASE WHEN is_favorite = 'Y' THEN 'N' ELSE 'Y' END
+    </insert>
+
+    <select id="selectFavorite" parameterType="String" resultType="kr.co.api.manager.db.board.model.ProductModel">
+        SELECT
+            f.product_id
+            , p.product_name
+            , p.product_price
+            , p.image_url
+            , p.reg_date
+        FROM favorite f
+        INNER JOIN product p ON f.product_id = p.product_id
+        WHERE 1 = 1
+            AND f.uid = #{uid}
+            AND f.is_favorite = 'Y'
+        ORDER BY reg_date DESC
+    </select>
+</mapper>

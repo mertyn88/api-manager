@@ -39,13 +39,14 @@ public class ChatServiceImpl implements ChatService {
     }
 
     @Override
-    public int insertMyChat(ChatModel chatModel) {
+    public ChatModel insertMyChat(ChatModel chatModel) {
         try{
             chatMapper.insertMyChat(chatModel);
         }catch (DataAccessException e){
             e.printStackTrace();
         }
-        return HttpStatus.OK.value();
+
+        return chatMapper.selectChatSeq(chatModel);
     }
 
     @Override
