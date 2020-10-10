@@ -5,10 +5,7 @@ import kr.co.api.core.response.DataResponse;
 import kr.co.api.manager.db.favorite.model.FavoriteModel;
 import kr.co.api.manager.db.favorite.service.FavoriteService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.io.IOException;
@@ -22,8 +19,11 @@ public class FavoriteController {
 
     @PostMapping(value = "/switchFavorite")
     @ApiOperation(value = "BoardController", response = Integer.class)
-    public DataResponse insertBoard(@Valid @RequestBody FavoriteModel favoriteModel) throws IOException {
-        return DataResponse.builder().data(favoriteService.switchFavorite(favoriteModel)).build();
+    public DataResponse insertBoard(
+            @Valid @RequestParam String uid,
+            @Valid @RequestParam String productId
+            ) throws IOException {
+        return DataResponse.builder().data(favoriteService.switchFavorite(uid, productId)).build();
     }
 
 }

@@ -9,7 +9,7 @@ import java.util.List;
 public interface FavoriteMapper {
 
     /** 관심상품 토글 **/
-    int switchFavorite(FavoriteModel favoriteModel);
+    int switchFavorite(String uid, String productId);
     /** 관심상품 리스트 **/
     List<FavoriteModel> selectFavorite(String uid);
 }

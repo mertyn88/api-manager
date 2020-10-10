@@ -1,9 +1,6 @@
 package kr.co.api.manager.db.board.service;
 
-import kr.co.api.manager.db.board.model.BoardModel;
-import kr.co.api.manager.db.board.model.DataModel;
-import kr.co.api.manager.db.board.model.ProductModel;
-import kr.co.api.manager.db.board.model.ReplyModel;
+import kr.co.api.manager.db.board.model.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -41,12 +38,18 @@ public interface BoardService {
     List<ProductModel> recommendProduct(String categoryDepth1, String categoryDepth2);
 
     /** 장터 - 상세물품페이지 **/
-    List<ProductModel> detailProduct(String productId);
+    ProductModel detailProduct(String productId);
 
     /** 장터 - 상세물품페이지 - 관련매물 **/
     List<ProductModel> purposeProduct(String purpose);
 
     /** 장터태그, 장터내용 검색 **/
     List<ProductModel> searchProduct(String keyword);
+
+    /** 물품 판매완료 선택 리스트, 판매자와 채팅한 유저 목록 **/
+    List<TargetListModel> targetUserList(String productId, String sourceUid);
+
+    /** 구매자 선택 리스트에서 선택시에 판매완료로 업데이트 **/
+    int targetUserUpdate(String productId, String sourceUid, String targetUid) throws IOException;
 
 }

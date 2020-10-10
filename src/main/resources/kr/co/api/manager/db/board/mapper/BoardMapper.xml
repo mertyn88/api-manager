@@ -72,20 +72,17 @@
 
     <insert id="insertProduct" parameterType="kr.co.api.manager.db.board.model.ProductModel">
         INSERT INTO flio.product(
-                    product_name
-                    , title
+                     title
                     , content
                     , category_depth1
                     , category_depth2
                     , category_option
-                    , status
                     , sale_yn
                     , tag
                     , base_url
                     , image_url
                     , use_date
                     , purchase_kind
-                    , purchase_price
                     , box_yn
                     , brand
                     , purpose
@@ -95,22 +92,22 @@
                     , product_related_url
                     , uid
                     , reg_date
+                    , product_price
+                    , trade_kind
+                    , flio_yn
         )
         VALUES(
-                #{productName}
-                , #{title}
+                  #{title}
                 , #{content}
                 , #{categoryDepth1}
                 , #{categoryDepth2}
                 , #{categoryOption}
-                , #{status}
                 , 'S'
                 , #{tag}
                 , #{baseUrl}
                 , #{imageUrl}
                 , #{useDate}
                 , #{purchaseKind}
-                , #{purchasePrice}
                 , #{boxYn}
                 , #{brand}
                 , #{purpose}
@@ -119,29 +116,28 @@
                 , #{repairYn}
                 , #{productRelatedUrl}
                 , #{uid}
-                , CURRENT_TIMESTAMP);
+                , CURRENT_TIMESTAMP)
+                , #{productPrice}
+                , #{tradeKind}
+                , #{flioYn}
     </insert>
 
     <!-- product select field -->
     <sql id="productField">
             pd.product_id
-            , pd.product_name
             , pd.product_price
             , pd.title
             , pd.content
             , pd.category_depth1
             , pd.category_depth2
             , pd.category_option
-            , pd.recommend_cnt
             , pd.select_cnt
-            , pd.status
             , pd.sale_yn
             , pd.tag
             , pd.base_url
             , pd.image_url
             , pd.use_date
             , pd.purchase_kind
-            , pd.purchase_price
             , pd.box_yn
             , pd.brand
             , pd.purpose
@@ -151,6 +147,15 @@
             , pd.product_related_url
             , pd.uid
             , pd.reg_date
+            , pd.trade_kind
+            , pd.faith_yn
+            , pd.flio_yn
+            , IFNULL(f.is_favorite, 'N') AS favorite_yn
+    </sql>
+
+    <!-- 상품 SELECT 정렬 관련 -->
+    <sql id="productOrder">
+        ORDER BY (SELECT COUNT(*) FROM favorite f WHERE pd.product_id = f.product_id AND f.is_favorite = 'Y') DESC, pd.select_cnt DESC, pd.reg_date DESC
     </sql>
 
     <!-- 마이페이지 -->
@@ -158,9 +163,10 @@
         SELECT
             <include refid="productField" />
         FROM flio.product pd
+        LEFT JOIN favorite f ON pd.uid = f.uid AND pd.product_id = f.product_id
         WHERE 1 = 1
             AND pd.uid = #{uid}
-        ORDER BY pd.recommend_cnt DESC, pd.select_cnt DESC, pd.reg_date DESC
+        <include refid="productOrder" />
     </select>
 
     <!-- 메인페이지 -->
@@ -168,8 +174,9 @@
         SELECT
             <include refid="productField" />
         FROM flio.product pd
+        LEFT JOIN favorite f ON pd.uid = f.uid AND pd.product_id = f.product_id
         WHERE 1 = 1
-        ORDER BY pd.recommend_cnt DESC, pd.select_cnt DESC, pd.reg_date DESC
+        <include refid="productOrder" />
     </select>
 
     <!-- 추천매물 -->
@@ -177,12 +184,13 @@
         SELECT
             <include refid="productField" />
         FROM flio.product pd
+        LEFT JOIN favorite f ON pd.uid = f.uid AND pd.product_id = f.product_id
         WHERE 1 = 1
             AND pd.category_depth1 = #{categoryDepth1}
             <if test="categoryDepth2 != null">
                 AND pd.category_depth2 = #{categoryDepth2}
             </if>
-        ORDER BY pd.recommend_cnt DESC, pd.select_cnt DESC, pd.reg_date DESC
+        <include refid="productOrder" />
     </select>
 
     <!-- 상세물품페이지 -->
@@ -193,6 +201,7 @@
             , fu.name      AS user_name
         FROM flio.product pd
         INNER JOIN flio.flio_user fu ON pd.uid = fu.uid
+        LEFT JOIN favorite f ON pd.uid = f.uid AND pd.product_id = f.product_id
         WHERE 1 = 1
             AND pd.product_id = #{productId}
     </select>
@@ -202,9 +211,10 @@
         SELECT
             <include refid="productField" />
         FROM flio.product pd
+        LEFT JOIN favorite f ON pd.uid = f.uid AND pd.product_id = f.product_id
         WHERE 1 = 1
             AND pd.purpose = #{purpose}
-        ORDER BY pd.recommend_cnt DESC, pd.select_cnt DESC, pd.reg_date DESC
+        <include refid="productOrder" />
     </select>
 
 
@@ -213,6 +223,7 @@
         SELECT
             <include refid="productField" />
         FROM flio.product pd
+        LEFT JOIN favorite f ON pd.uid = f.uid AND pd.product_id = f.product_id
         WHERE 1 = 1
             AND
                 (
@@ -220,8 +231,41 @@
                     OR
                     pd.content LIKE CONCAT('%', #{keyword}, '%')
                 )
-        ORDER BY pd.recommend_cnt DESC, pd.select_cnt DESC, pd.reg_date DESC
+        <include refid="productOrder" />
     </select>
+
+    <!-- 물품 판매완료 선택 리스트, 판매자와 채팅한 유저 목록 -->
+    <select id="targetUserList" parameterType="String" resultType="kr.co.api.manager.db.board.model.TargetListModel">
+        SELECT
+            target.uid AS target_uid
+            , target.name AS target_name
+            , target.image_url AS target_image_url
+        FROM chat c
+        INNER JOIN flio_user target ON c.chat_target_uid = target.uid
+        WHERE 1 = 1
+            AND c.product_id = #{productId}
+            AND c.chat_source_uid = #{sourceUid}
+    </select>
+
+    <!-- 구매자 선택 리스트에서 선택시에 판매완료로 업데이트 -->
+    <update id="targetUserUpdate" parameterType="String">
+        UPDATE product SET sale_yn = 'Y', target_uid = #{targetUid}
+        WHERE product_id = #{productId} AND uid = #{sourceUid}
+    </update>
+
+    <!-- 구매자 판매완료 업데이트에서 사용하는 푸쉬알람 필요 데이터 -->
+    <select id="targetUserUpdatePush" parameterType="String" resultType="kr.co.api.manager.db.board.model.TargetUpdatePushModel">
+        SELECT
+            pd.title
+            , pd.base_url
+            , pd.image_url
+            , (SELECT fu.message_token FROM flio_user fu WHERE fu.uid = #{targetUid}) AS target_message_token
+        FROM product pd
+        WHERE 1 = 1
+            AND pd.product_id = #{productId}
+    </select>
+
+
 
     <!-- 인증 검색 / 테이블 미구현 -->
     <!-- 행사 검색 / 테이블 미구현 -->

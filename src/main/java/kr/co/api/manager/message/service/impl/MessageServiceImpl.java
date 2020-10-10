@@ -14,15 +14,10 @@ import java.io.IOException;
 @Slf4j
 public class MessageServiceImpl implements MessageService {
 
-    private final String FIRE_BASE_URL = "https://fcm.googleapis.com/fcm/send";
-    private final String DB_INSERT_URL = "http://localhost:8080/chat/insertMyChatDetail";
-    private final String SEND_MASSAGE_ACCESS_TOKEN = "AAAAHjkhH_E:APA91bGuDoU6hDxqlsDwpor5jR0ariodMxZe0mx8m9KISRHFGu9FMLO7G4ajBCkSZrBpVPhQsmR4WYRQmdUPkL7eXwB1MmpWhLNaKHftz4rGZ4xNSXq7uNtxqBt2CNS-7Ixs0CyFcDh0";
-
-
     @Override
     public Integer sendMessage(MessageSettingModel messageSettingModel) throws IOException {
 
-        int responseCode = HttpUtil.getPostUrl(messageSettingModel, FIRE_BASE_URL, SEND_MASSAGE_ACCESS_TOKEN);
+        int responseCode = HttpUtil.getPostUrl(messageSettingModel, HttpUtil.FIRE_BASE_URL, HttpUtil.SEND_MASSAGE_ACCESS_TOKEN);
 
         /** 성공 했을 경우 **/
         if(responseCode == HttpStatus.OK.value()){
@@ -31,8 +26,9 @@ public class MessageServiceImpl implements MessageService {
             chatDetailModel.setChatSeq(messageSettingModel.getChatSeq());
             chatDetailModel.setChatSourceMessage(messageSettingModel.getData().getChatSourceMessage());
             chatDetailModel.setChatTargetMessage(messageSettingModel.getData().getChatTargetMessage());
+            chatDetailModel.setType("chat");
 
-            return HttpUtil.getPostUrl(chatDetailModel, DB_INSERT_URL, null);
+            return HttpUtil.getPostUrl(chatDetailModel, HttpUtil.DB_INSERT_URL, null);
         } else {
             // 실패시
             return responseCode;

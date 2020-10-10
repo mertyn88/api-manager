@@ -14,8 +14,11 @@ public class ChatModel {
 
     private Integer chatSeq;        //채팅 시퀀스 및 ID
     private Integer chatIndex;      //채팅 인덱스
-    private String productName;     //물품 이름
+    private String title;           //물품 이름
     private String productId;       //물품 ID
+    private String productBaseUrl;
+    private String productImageUrl;
+    private Integer productPrice;
     private String chatSourceName;  //본인 이름
     private String chatSourceUid;   //본인 UID
     private String chatSourceMessageToken;  //본인 메세지 토큰값

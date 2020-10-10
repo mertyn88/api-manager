@@ -7,10 +7,13 @@
 
     <select id="selectMyChat" parameterType="kr.co.api.manager.db.chat.model.request.ChatRequestModel" resultType="kr.co.api.manager.db.chat.model.ChatModel">
         SELECT
-        	 chat_seq
+        	  chat_seq
 			, @rownum:=@rownum+1 AS chat_index
             , product_id
-            , product_name
+            , product_base_url
+            , product_image_url
+            , product_price
+            , title
             , chat_source_uid
             , chat_source_message_token
             , chat_source_image_url
@@ -26,7 +29,10 @@
            SELECT
             c.chat_seq					AS chat_seq
             , p.product_id				AS product_id
-            , p.product_name			AS product_name
+            , p.base_url 				AS product_base_url
+            , p.image_url 				AS product_image_url
+            , p.product_price 			AS product_price
+            , p.title			        AS title
             , c.chat_source_uid 		AS chat_source_uid
             , source.message_token  	AS chat_source_message_token
             , source.image_url			AS chat_source_image_url
@@ -73,7 +79,7 @@
         SELECT
             chat_seq
             , @rownum:=@rownum+1 AS chat_index
-            , product_name
+            , title
             , chat_source_message
             , chat_target_message
             , chat_date
@@ -81,7 +87,7 @@
         (
          SELECT
               cd.chat_seq
-            , p.product_name
+            , p.title
             , cd.chat_source_message
             , cd.chat_target_message
             , cd.chat_date

@@ -2,10 +2,7 @@ package kr.co.api.manager.db.board.controller;
 
 import io.swagger.annotations.ApiOperation;
 import kr.co.api.core.response.DataResponse;
-import kr.co.api.manager.db.board.model.BoardModel;
-import kr.co.api.manager.db.board.model.DataModel;
-import kr.co.api.manager.db.board.model.ProductModel;
-import kr.co.api.manager.db.board.model.ReplyModel;
+import kr.co.api.manager.db.board.model.*;
 import kr.co.api.manager.db.board.service.BoardService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -64,7 +61,7 @@ public class BoardController {
     /** 장터 - 추천매물 **/
     @GetMapping("/recommendProduct")
     @ApiOperation(value = "장터 - 추천매물", response = ProductModel.class)
-    public DataResponse recommendProduct(@Valid @RequestParam String categoryDepth1, @Valid @RequestParam String categoryDepth2) {
+    public DataResponse recommendProduct(@Valid @RequestParam String categoryDepth1, @Valid @RequestParam(required = false) String categoryDepth2) {
         return DataResponse.builder().data(boardService.recommendProduct(categoryDepth1, categoryDepth2)).build();
     }
 
@@ -87,5 +84,26 @@ public class BoardController {
     @ApiOperation(value = "장터태그, 장터내용 검색", response = ProductModel.class)
     public DataResponse searchProduct(@Valid @RequestParam String keyword) {
         return DataResponse.builder().data(boardService.searchProduct(keyword)).build();
+    }
+
+    /** 장터 - 판매완료 선택 리스트 **/
+    @GetMapping("/targetUserList")
+    @ApiOperation(value = "장터 - 판매완료 선택 리스트", response = TargetListModel.class)
+    public DataResponse targetUserList(
+            @Valid @RequestParam String productId
+            , @Valid @RequestParam String sourceUid
+    ) {
+        return DataResponse.builder().data(boardService.targetUserList(productId, sourceUid)).build();
+    }
+
+    /** 장터 - 판매완료 업데이트 **/
+    @GetMapping("/targetUserUpdate")
+    @ApiOperation(value = "장터 - 판매완료 업데이트", response = Integer.class)
+    public DataResponse targetUserUpdate(
+            @Valid @RequestParam String productId
+            , @Valid @RequestParam String sourceUid
+            , @Valid @RequestParam String targetUid
+    ) throws IOException {
+        return DataResponse.builder().data(boardService.targetUserUpdate(productId, sourceUid, targetUid)).build();
     }
 }

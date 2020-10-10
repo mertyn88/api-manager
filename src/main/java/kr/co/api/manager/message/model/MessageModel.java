@@ -16,4 +16,13 @@ public class MessageModel {
 
     /** 로그아웃용 **/
     private boolean logoutForce;
+
+    /** 상품판매용 **/
+    private String tradeTitle;
+    private String tradeBaseUrl;
+    private String tradeImageUrl;
+    private String type;
+
+
+
 }

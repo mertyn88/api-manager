@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="kr.co.api.manager.db.favorite.mapper.FavoriteMapper">
-    <insert id="switchFavorite" parameterType="kr.co.api.manager.db.favorite.model.FavoriteModel">
+    <insert id="switchFavorite" parameterType="String">
         INSERT INTO `favorite` (`uid`, `product_id`)
         VALUES(
             #{uid}
@@ -17,7 +17,7 @@
     <select id="selectFavorite" parameterType="String" resultType="kr.co.api.manager.db.board.model.ProductModel">
         SELECT
             f.product_id
-            , p.product_name
+            , p.titme
             , p.product_price
             , p.image_url
             , p.reg_date

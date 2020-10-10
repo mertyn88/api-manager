@@ -19,11 +19,11 @@ public class FavoriteServiceImpl implements FavoriteService {
     private final FavoriteMapper favoriteMapper;
 
     @Override
-    public int switchFavorite(FavoriteModel favoriteModel) {
+    public int switchFavorite(String uid, String productId) {
 
         /** Merge Into **/
         try{
-            favoriteMapper.switchFavorite(favoriteModel);
+            favoriteMapper.switchFavorite(uid, productId);
         }catch (DataAccessException e){
             e.printStackTrace();
         }

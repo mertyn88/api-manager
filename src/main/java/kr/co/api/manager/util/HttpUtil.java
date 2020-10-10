@@ -12,6 +12,11 @@ import java.net.URL;
 @Slf4j
 public class HttpUtil {
 
+    public static final String FIRE_BASE_URL = "https://fcm.googleapis.com/fcm/send";
+    public static final String DB_INSERT_URL = "http://localhost:8080/chat/insertMyChatDetail";
+    public static final String SEND_MASSAGE_ACCESS_TOKEN = "AAAAHjkhH_E:APA91bGuDoU6hDxqlsDwpor5jR0ariodMxZe0mx8m9KISRHFGu9FMLO7G4ajBCkSZrBpVPhQsmR4WYRQmdUPkL7eXwB1MmpWhLNaKHftz4rGZ4xNSXq7uNtxqBt2CNS-7Ixs0CyFcDh0";
+
+
     public static <T> int getPostUrl(T model, String targetUrl, String authorization) throws IOException {
         URL url = new URL(targetUrl);
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();

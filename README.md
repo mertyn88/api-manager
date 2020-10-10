@@ -103,7 +103,7 @@ __`채팅방 내역`__ Select
   "chatTargetName": "string",
   "chatTargetUid": "string",
   "productId": "string",
-  "productName": "string"
+  "title": "string"
 }
 ```
 > 해당 기능은 1:1 대화를 나눈 방의 리스트를 볼 수 있다.
@@ -118,7 +118,7 @@ __`채팅글 내역`__ Select
   "chatSeq": 0,
   "chatSourceMessage": "string",
   "chatTargetMessage": "string",
-  "productName": "string"
+  "title": "string"
 }
 ```
 > 해당 기능은 대화에 대한 실제 내역을 볼 수 있다.

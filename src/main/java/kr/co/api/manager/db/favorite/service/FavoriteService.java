@@ -6,6 +6,6 @@ import java.util.List;
 
 public interface FavoriteService {
 
-    int switchFavorite(FavoriteModel favoriteModel);
+    int switchFavorite(String uid, String productId);
     List<FavoriteModel> selectFavorite(String uid);
 }

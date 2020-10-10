@@ -21,10 +21,6 @@ public class UserServiceImpl implements UserService {
 
     private final UserMapper userMapper;
 
-    private final String FIRE_BASE_URL = "https://fcm.googleapis.com/fcm/send";
-    private final String SEND_MASSAGE_ACCESS_TOKEN = "AAAAHjkhH_E:APA91bGuDoU6hDxqlsDwpor5jR0ariodMxZe0mx8m9KISRHFGu9FMLO7G4ajBCkSZrBpVPhQsmR4WYRQmdUPkL7eXwB1MmpWhLNaKHftz4rGZ4xNSXq7uNtxqBt2CNS-7Ixs0CyFcDh0";
-
-
     /**
      * 유저 정보 삽입
      * @param userModel
@@ -50,17 +46,15 @@ public class UserServiceImpl implements UserService {
                     setData(
                         new MessageModel(){{
                             setLogoutForce(true);
+                            setType("logout");
                         }}
                     );
                 }};
 
-                System.out.println(loginUserModel);
-                System.out.println(userModel);
-
                 /** 새로운 데이터로 업데이트 **/
                 userMapper.insertUser(userModel);
 
-                return HttpUtil.getPostUrl(messageSettingModel, FIRE_BASE_URL, SEND_MASSAGE_ACCESS_TOKEN);
+                return HttpUtil.getPostUrl(messageSettingModel, HttpUtil.FIRE_BASE_URL, HttpUtil.SEND_MASSAGE_ACCESS_TOKEN);
             }
 
         }catch (DataAccessException | IOException e){

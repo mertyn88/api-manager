@@ -1,4 +1,4 @@
-package kr.co.api.manager.db.favorite.model;
+package kr.co.api.manager.db.board.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,12 +9,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class FavoriteModel {
-
-    private String uid;
-    private Integer productId;
+public class TargetUpdatePushModel {
     private String title;
-    private Integer ProductPrice;
+    private String baseUrl;
     private String imageUrl;
-    private String regDate;
+    private String targetMessageToken;
 }

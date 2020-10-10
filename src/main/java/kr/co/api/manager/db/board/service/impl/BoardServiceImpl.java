@@ -1,11 +1,11 @@
 package kr.co.api.manager.db.board.service.impl;
 
 import kr.co.api.manager.db.board.mapper.BoardMapper;
-import kr.co.api.manager.db.board.model.BoardModel;
-import kr.co.api.manager.db.board.model.DataModel;
-import kr.co.api.manager.db.board.model.ProductModel;
-import kr.co.api.manager.db.board.model.ReplyModel;
+import kr.co.api.manager.db.board.model.*;
 import kr.co.api.manager.db.board.service.BoardService;
+import kr.co.api.manager.message.model.MessageModel;
+import kr.co.api.manager.message.model.MessageSettingModel;
+import kr.co.api.manager.util.HttpUtil;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -193,7 +193,7 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
-    public List<ProductModel> detailProduct(String productId) {
+    public ProductModel detailProduct(String productId) {
         return boardMapper.detailProduct(productId);
     }
 
@@ -205,5 +205,40 @@ public class BoardServiceImpl implements BoardService {
     @Override
     public List<ProductModel> searchProduct(String keyword) {
         return boardMapper.searchProduct(keyword);
+    }
+
+
+    @Override
+    public List<TargetListModel> targetUserList(String productId, String sourceUid) {
+        return boardMapper.targetUserList(productId, sourceUid);
+    }
+
+    @Override
+    public int targetUserUpdate(String productId, String sourceUid, String targetUid) throws IOException {
+        /** 물품 상태 업데이트 **/
+        try{
+            boardMapper.targetUserUpdate(productId, sourceUid, targetUid);
+        }catch (DataAccessException e){
+            e.printStackTrace();
+        }
+
+        /** 상품 정보 가져오기 (푸쉬알람용) **/
+        TargetUpdatePushModel targetUpdatePushModel = boardMapper.targetUserUpdatePush(productId, targetUid);
+
+        /** 푸쉬알람 보내기 **/
+        MessageSettingModel messageSettingModel = new MessageSettingModel(){{
+            setTo(targetUpdatePushModel.getTargetMessageToken());
+            setPriority("high");
+            setData(
+                    new MessageModel(){{
+                        setTradeTitle(targetUpdatePushModel.getTitle());
+                        setTradeBaseUrl(targetUpdatePushModel.getBaseUrl());
+                        setTradeImageUrl(targetUpdatePushModel.getImageUrl());
+                        setType("trade");
+                    }}
+            );
+        }};
+
+        return HttpUtil.getPostUrl(messageSettingModel, HttpUtil.FIRE_BASE_URL, HttpUtil.SEND_MASSAGE_ACCESS_TOKEN);
     }
 }

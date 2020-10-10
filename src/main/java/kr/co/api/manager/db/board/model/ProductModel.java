@@ -13,9 +13,7 @@ public class ProductModel {
 
     /** 상품정보 **/
     private Integer productId;    //물품 ID
-    private String productName;    //물품 명
     private Integer productPrice;
-    private String status;  //물품 상태
     private String saleYn; //물품 판매여부(Y: 판매완료, R: 예약중, S: 판매중)
     private String brand;           //제조사이름
     private String modelNo;        //모델명넘버
@@ -25,7 +23,6 @@ public class ProductModel {
     private String categoryDepth1;      //카테고리 1뎁스
     private String categoryDepth2;      //카테고리 2뎁스
     private String categoryOption;      //카테고리 옵션
-    private int recommendCnt;           //추천수
     private int selectCnt;              //조회수
 
 
@@ -37,7 +34,6 @@ public class ProductModel {
     private String imageUrl;       //이미지 URL
     private String useDate;        //사용기간ß
     private String purchaseKind;   //구매방법
-    private String purchasePrice;  //구매당시가격
     private String boxYn;          //제품박스유무
     private String purpose;         //용도
     private String productRelatedUrl; //제품관련URL
@@ -49,5 +45,8 @@ public class ProductModel {
     private String userImageUrl;
     private String userName;
 
-
+    private String tradeKind;   //거래방법
+    private String faithYn;     //믿음여부?
+    private String flioYn;      //플리오 여부
+    private String favoriteYn;  //관심물품 여부
 }
