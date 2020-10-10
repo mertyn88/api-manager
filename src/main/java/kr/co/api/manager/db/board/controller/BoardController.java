@@ -58,6 +58,14 @@ public class BoardController {
         return DataResponse.builder().data(boardService.mainProduct()).build();
     }
 
+    /** 메인페이지 - 구매내역 **/
+    @GetMapping("/targetProduct")
+    @ApiOperation(value = "메인페이지 - 구매내역", response = ProductModel.class)
+    public DataResponse targetProduct(@Valid @RequestParam String targetUid)  {
+        return DataResponse.builder().data(boardService.targetProduct(targetUid)).build();
+    }
+
+
     /** 장터 - 추천매물 **/
     @GetMapping("/recommendProduct")
     @ApiOperation(value = "장터 - 추천매물", response = ProductModel.class)
@@ -105,5 +113,16 @@ public class BoardController {
             , @Valid @RequestParam String targetUid
     ) throws IOException {
         return DataResponse.builder().data(boardService.targetUserUpdate(productId, sourceUid, targetUid)).build();
+    }
+
+    /** 장터 - 판매완료 업데이트 **/
+    @GetMapping("/targetUserReview")
+    @ApiOperation(value = "장터 - 구매자 구매 후기 업데이트", response = Integer.class)
+    public DataResponse targetUserReview(
+            @Valid @RequestParam String productId
+            , @Valid @RequestParam String targetUid
+            , @Valid @RequestParam String review
+    ) {
+        return DataResponse.builder().data(boardService.targetUserReview(productId, targetUid, review)).build();
     }
 }

@@ -16,6 +16,9 @@ public interface BoardMapper {
     /** 장터 - 마이페이지 **/
     List<ProductModel> mypageProduct(String uid);
 
+    /** 마이페이지 - 구매내역 **/
+    List<ProductModel> targetProduct(String targetUid);
+
     /** 장터 - 메인페이지 **/
     List<ProductModel> mainProduct();
 
@@ -39,4 +42,7 @@ public interface BoardMapper {
 
     /** 구매자 판매완료 업데이트에서 사용하는 푸쉬알람 필요 데이터 **/
     TargetUpdatePushModel targetUserUpdatePush(String productId, String targetUid);
+
+    /** 구매자 후기 업데이트 **/
+    int targetUserReview(String productId, String targetUid, String review);
 }

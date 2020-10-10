@@ -31,6 +31,9 @@ public interface BoardService {
     /** 장터 - 마이페이지 **/
     List<ProductModel> mypageProduct(String uid);
 
+    /** 마이페이지 - 구매내역 **/
+    List<ProductModel> targetProduct(String targetUid);
+
     /** 장터 - 메인페이지 **/
     List<ProductModel> mainProduct();
 
@@ -51,5 +54,8 @@ public interface BoardService {
 
     /** 구매자 선택 리스트에서 선택시에 판매완료로 업데이트 **/
     int targetUserUpdate(String productId, String sourceUid, String targetUid) throws IOException;
+
+    /** 구매자 후기 업데이트 **/
+    int targetUserReview(String productId, String targetUid, String review);
 
 }

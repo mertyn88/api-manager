@@ -169,6 +169,17 @@
         <include refid="productOrder" />
     </select>
 
+    <!-- 구매내역 -->
+    <select id="targetProduct" parameterType="String" resultType="kr.co.api.manager.db.board.model.ProductModel">
+        SELECT
+        <include refid="productField" />
+        FROM flio.product pd
+        LEFT JOIN favorite f ON pd.uid = f.uid AND pd.product_id = f.product_id
+        WHERE 1 = 1
+        AND pd.target_uid = #{targetUid}
+        <include refid="productOrder" />
+    </select>
+
     <!-- 메인페이지 -->
     <select id="mainProduct" resultType="kr.co.api.manager.db.board.model.ProductModel">
         SELECT
@@ -264,6 +275,12 @@
         WHERE 1 = 1
             AND pd.product_id = #{productId}
     </select>
+
+    <!-- 구매자 후기 업데이트 -->
+    <update id="targetUserReview" parameterType="String">
+        UPDATE product SET product_review = #{review}
+        WHERE product_id = #{productId} AND target_uid = #{targetUid}
+    </update>
 
 
 

@@ -182,6 +182,14 @@ public class BoardServiceImpl implements BoardService {
         return boardMapper.mypageProduct(uid);
     }
 
+    /**
+     * 마이페이지 - 구매내역
+     * @return
+     */
+    public List<ProductModel> targetProduct(String targetUid){
+        return boardMapper.targetProduct(targetUid);
+    }
+
     @Override
     public List<ProductModel> mainProduct() {
         return boardMapper.mainProduct();
@@ -240,5 +248,18 @@ public class BoardServiceImpl implements BoardService {
         }};
 
         return HttpUtil.getPostUrl(messageSettingModel, HttpUtil.FIRE_BASE_URL, HttpUtil.SEND_MASSAGE_ACCESS_TOKEN);
+    }
+
+    @Override
+    public int targetUserReview(String productId, String targetUid, String review) {
+
+        /** 구매자 후기 업데이트 **/
+        try{
+            boardMapper.targetUserReview(productId, targetUid, review);
+        }catch (DataAccessException e){
+            e.printStackTrace();
+        }
+
+        return HttpStatus.OK.value();
     }
 }
