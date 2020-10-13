@@ -1,0 +1,48 @@
+// PUT /crawler
+{
+  "settings": {
+    "index": {
+      "number_of_shards": 1,
+      "number_of_replicas": 0,
+      "analysis": {
+        "analyzer": {
+          "nori_analyzer": {
+            "type": "nori"
+          }
+        }
+      }
+    }
+  },
+  "mappings": {
+    "properties":{
+      "base_url":{
+        "type":"keyword"
+      },
+      "target_url":{
+        "type":"keyword"
+      },
+      "keyword":{
+        "type":"keyword"
+      },
+      "title":{
+        "type":"text",
+        "analyzer": "nori_analyzer",
+        "term_vector": "with_positions_offsets"
+      },
+      "content":{
+        "type":"text",
+        "analyzer": "nori_analyzer",
+        "term_vector": "with_positions_offsets"
+      },
+      "image_path":{
+        "type":"keyword"
+      },
+      "reg_date":{
+        "type":"date"
+      },
+      "chg_date":{
+        "type":"date"
+      }
+    }
+  }
+}

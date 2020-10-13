@@ -116,10 +116,11 @@
                 , #{repairYn}
                 , #{productRelatedUrl}
                 , #{uid}
-                , CURRENT_TIMESTAMP)
+                , CURRENT_TIMESTAMP
                 , #{productPrice}
                 , #{tradeKind}
                 , #{flioYn}
+                )
     </insert>
 
     <!-- product select field -->
@@ -150,6 +151,7 @@
             , pd.trade_kind
             , pd.faith_yn
             , pd.flio_yn
+            , pd.product_review
             , IFNULL(f.is_favorite, 'N') AS favorite_yn
     </sql>
 
@@ -172,8 +174,11 @@
     <!-- 구매내역 -->
     <select id="targetProduct" parameterType="String" resultType="kr.co.api.manager.db.board.model.ProductModel">
         SELECT
-        <include refid="productField" />
+            <include refid="productField" />
+            , fu.image_url AS user_image_url
+            , fu.name      AS user_name
         FROM flio.product pd
+        INNER JOIN flio.flio_user fu ON pd.target_uid = fu.uid
         LEFT JOIN favorite f ON pd.uid = f.uid AND pd.product_id = f.product_id
         WHERE 1 = 1
         AND pd.target_uid = #{targetUid}
@@ -224,7 +229,11 @@
         FROM flio.product pd
         LEFT JOIN favorite f ON pd.uid = f.uid AND pd.product_id = f.product_id
         WHERE 1 = 1
-            AND pd.purpose = #{purpose}
+            AND pd.product_id != #{productId}
+            AND pd.purpose IN
+            <foreach collection="purpose" index="index" open="(" close=")" separator="," item="item">
+                #{item}
+            </foreach>
         <include refid="productOrder" />
     </select>
 

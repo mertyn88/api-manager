@@ -49,4 +49,5 @@ public class ProductModel {
     private String faithYn;     //믿음여부?
     private String flioYn;      //플리오 여부
     private String favoriteYn;  //관심물품 여부
+    private String productReview;
 }

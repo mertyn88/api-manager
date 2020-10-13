@@ -17,6 +17,8 @@ public class SearchModel {
     private String title;
     private String content;
     private String keyword;
+    private String regDate;
+    private String imageUrl;
 
     //검색어
     private String query;

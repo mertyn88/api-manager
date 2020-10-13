@@ -74,9 +74,8 @@ public class SearchServiceImpl implements SearchService {
 
             String documentTitle = (String) sourceAsMap.get("title");
 
-         //   Map<String, Object> innerObject =
-         //           (Map<String, Object>) sourceAsMap.get("innerObject");
-
+            //   Map<String, Object> innerObject =
+            //   (Map<String, Object>) sourceAsMap.get("innerObject");
 
             Map<String, HighlightField> highlightFields = hit.getHighlightFields();
             HighlightField highlight = highlightFields.get("content");
@@ -90,7 +89,10 @@ public class SearchServiceImpl implements SearchService {
                   setBaseUrl((String)sourceAsMap.get("base_url"));
                   setTargetUrl((String)sourceAsMap.get("target_url"));
                   setKeyword((String)sourceAsMap.get("keyword"));
-                  setContent(fragments[0].string());
+                  setRegDate((String)sourceAsMap.get("reg_date"));
+                  setContent(fragmentString);
+                  setImageUrl((String)sourceAsMap.get("image_path"));
+                  setKeyword(query);
               }}
             );
         }

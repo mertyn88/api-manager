@@ -14,10 +14,10 @@
         is_favorite = CASE WHEN is_favorite = 'Y' THEN 'N' ELSE 'Y' END
     </insert>
 
-    <select id="selectFavorite" parameterType="String" resultType="kr.co.api.manager.db.board.model.ProductModel">
+    <select id="selectFavorite" parameterType="String" resultType="kr.co.api.manager.db.favorite.model.FavoriteModel">
         SELECT
             f.product_id
-            , p.titme
+            , p.title
             , p.product_price
             , p.image_url
             , p.reg_date

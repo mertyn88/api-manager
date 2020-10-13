@@ -83,8 +83,8 @@ public class BoardController {
     /** 장터 - 상세물품페이지 - 관련매물 **/
     @GetMapping("/purposeProduct")
     @ApiOperation(value = "장터 - 상세물품페이지 - 관련매물", response = ProductModel.class)
-    public DataResponse purposeProduct(@Valid @RequestParam String purpose) {
-        return DataResponse.builder().data(boardService.purposeProduct(purpose)).build();
+    public DataResponse purposeProduct(@Valid @RequestParam String productId, @Valid @RequestParam String purpose) {
+        return DataResponse.builder().data(boardService.purposeProduct(productId, List.of(purpose.split(",")))).build();
     }
 
     /** 장터태그, 장터내용 검색 **/

@@ -44,7 +44,7 @@ public interface BoardService {
     ProductModel detailProduct(String productId);
 
     /** 장터 - 상세물품페이지 - 관련매물 **/
-    List<ProductModel> purposeProduct(String purpose);
+    List<ProductModel> purposeProduct(String productId, List<String> purpose);
 
     /** 장터태그, 장터내용 검색 **/
     List<ProductModel> searchProduct(String keyword);

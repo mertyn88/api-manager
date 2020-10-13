@@ -1,0 +1,24 @@
+// GET crawler/_search
+{
+  "_source": {
+    "excludes": [
+      "content"
+    ]
+  },
+  "query" : {
+    "match": {
+      "content": "마크 레빈슨"
+    }
+  },
+  "highlight" : {
+    "fields" : {
+      "content" : {
+        "pre_tags" : ["<HS>"],
+        "post_tags" : ["</HE>"],
+        "number_of_fragments" : 1,
+        "fragment_size" : 150,
+        "type" : "fvh"
+      }
+    }
+  }
+}

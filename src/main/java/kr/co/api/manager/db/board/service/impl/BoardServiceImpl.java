@@ -206,8 +206,8 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
-    public List<ProductModel> purposeProduct(String purpose) {
-        return boardMapper.purposeProduct(purpose);
+    public List<ProductModel> purposeProduct(String productId, List<String> purpose) {
+        return boardMapper.purposeProduct(productId, purpose);
     }
 
     @Override

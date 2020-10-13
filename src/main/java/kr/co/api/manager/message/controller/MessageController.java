@@ -40,6 +40,7 @@ public class MessageController {
                        setChatTargetName(messageRequestModel.getChatTargetName());
                        setChatTargetMessage(messageRequestModel.getChatTargetMessage());
                        setChatTargetImageUrl(messageRequestModel.getChatTargetImageUrl());
+                       setType("chat");
                    }}
            );
         }};
