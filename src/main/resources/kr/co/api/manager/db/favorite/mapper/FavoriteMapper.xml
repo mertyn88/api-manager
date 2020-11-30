@@ -19,6 +19,7 @@
             f.product_id
             , p.title
             , p.product_price
+            , p.base_url
             , p.image_url
             , p.reg_date
         FROM favorite f

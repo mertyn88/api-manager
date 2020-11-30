@@ -54,44 +54,44 @@ public class BoardController {
     /** 장터 - 메인페이지 **/
     @GetMapping("/mainProduct")
     @ApiOperation(value = "장터 - 메인페이지", response = ProductModel.class)
-    public DataResponse mainProduct() {
-        return DataResponse.builder().data(boardService.mainProduct()).build();
+    public DataResponse mainProduct(@Valid @RequestParam String uid) {
+        return DataResponse.builder().data(boardService.mainProduct(uid)).build();
     }
 
     /** 메인페이지 - 구매내역 **/
     @GetMapping("/targetProduct")
     @ApiOperation(value = "메인페이지 - 구매내역", response = ProductModel.class)
-    public DataResponse targetProduct(@Valid @RequestParam String targetUid)  {
-        return DataResponse.builder().data(boardService.targetProduct(targetUid)).build();
+    public DataResponse targetProduct(@Valid @RequestParam String uid, @Valid @RequestParam String targetUid)  {
+        return DataResponse.builder().data(boardService.targetProduct(uid, targetUid)).build();
     }
 
 
     /** 장터 - 추천매물 **/
     @GetMapping("/recommendProduct")
     @ApiOperation(value = "장터 - 추천매물", response = ProductModel.class)
-    public DataResponse recommendProduct(@Valid @RequestParam String categoryDepth1, @Valid @RequestParam(required = false) String categoryDepth2) {
-        return DataResponse.builder().data(boardService.recommendProduct(categoryDepth1, categoryDepth2)).build();
+    public DataResponse recommendProduct(@Valid @RequestParam String uid, @Valid @RequestParam String categoryDepth1, @Valid @RequestParam(required = false) String categoryDepth2) {
+        return DataResponse.builder().data(boardService.recommendProduct(uid, categoryDepth1, categoryDepth2)).build();
     }
 
     /** 장터 - 상세물품페이지 **/
     @GetMapping("/detailProduct")
     @ApiOperation(value = "장터 - 상세물품페이지", response = ProductModel.class)
-    public DataResponse detailProduct(@Valid @RequestParam String productId) {
-        return DataResponse.builder().data(boardService.detailProduct(productId)).build();
+    public DataResponse detailProduct(@Valid @RequestParam String uid, @Valid @RequestParam String productId) {
+        return DataResponse.builder().data(boardService.detailProduct(uid, productId)).build();
     }
 
     /** 장터 - 상세물품페이지 - 관련매물 **/
     @GetMapping("/purposeProduct")
     @ApiOperation(value = "장터 - 상세물품페이지 - 관련매물", response = ProductModel.class)
-    public DataResponse purposeProduct(@Valid @RequestParam String productId, @Valid @RequestParam String purpose) {
-        return DataResponse.builder().data(boardService.purposeProduct(productId, List.of(purpose.split(",")))).build();
+    public DataResponse purposeProduct(@Valid @RequestParam String uid, @Valid @RequestParam String productId, @Valid @RequestParam String purpose) {
+        return DataResponse.builder().data(boardService.purposeProduct(uid, productId, List.of(purpose.split(",")))).build();
     }
 
     /** 장터태그, 장터내용 검색 **/
     @GetMapping("/searchProduct")
     @ApiOperation(value = "장터태그, 장터내용 검색", response = ProductModel.class)
-    public DataResponse searchProduct(@Valid @RequestParam String keyword) {
-        return DataResponse.builder().data(boardService.searchProduct(keyword)).build();
+    public DataResponse searchProduct(@Valid @RequestParam String uid, @Valid @RequestParam String keyword) {
+        return DataResponse.builder().data(boardService.searchProduct(uid, keyword)).build();
     }
 
     /** 장터 - 판매완료 선택 리스트 **/

@@ -15,6 +15,7 @@ public class FavoriteModel {
     private Integer productId;
     private String title;
     private Integer ProductPrice;
+    private String baseUrl;
     private String imageUrl;
     private String regDate;
 }

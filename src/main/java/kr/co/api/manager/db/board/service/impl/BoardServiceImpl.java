@@ -186,33 +186,33 @@ public class BoardServiceImpl implements BoardService {
      * 마이페이지 - 구매내역
      * @return
      */
-    public List<ProductModel> targetProduct(String targetUid){
-        return boardMapper.targetProduct(targetUid);
+    public List<ProductModel> targetProduct(String uid, String targetUid){
+        return boardMapper.targetProduct(uid, targetUid);
     }
 
     @Override
-    public List<ProductModel> mainProduct() {
-        return boardMapper.mainProduct();
+    public List<ProductModel> mainProduct(String uid) {
+        return boardMapper.mainProduct(uid);
     }
 
     @Override
-    public List<ProductModel> recommendProduct(String categoryDepth1, String categoryDepth2) {
-        return boardMapper.recommendProduct(categoryDepth1, categoryDepth2);
+    public List<ProductModel> recommendProduct(String uid, String categoryDepth1, String categoryDepth2) {
+        return boardMapper.recommendProduct(uid, categoryDepth1, categoryDepth2);
     }
 
     @Override
-    public ProductModel detailProduct(String productId) {
-        return boardMapper.detailProduct(productId);
+    public ProductModel detailProduct(String uid, String productId) {
+        return boardMapper.detailProduct(uid, productId);
     }
 
     @Override
-    public List<ProductModel> purposeProduct(String productId, List<String> purpose) {
-        return boardMapper.purposeProduct(productId, purpose);
+    public List<ProductModel> purposeProduct(String uid, String productId, List<String> purpose) {
+        return boardMapper.purposeProduct(uid, productId, purpose);
     }
 
     @Override
-    public List<ProductModel> searchProduct(String keyword) {
-        return boardMapper.searchProduct(keyword);
+    public List<ProductModel> searchProduct(String uid, String keyword) {
+        return boardMapper.searchProduct(uid, keyword);
     }
 
 

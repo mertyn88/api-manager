@@ -165,7 +165,7 @@
         SELECT
             <include refid="productField" />
         FROM flio.product pd
-        LEFT JOIN favorite f ON pd.uid = f.uid AND pd.product_id = f.product_id
+        LEFT JOIN favorite f ON f.uid = #{uid} AND pd.product_id = f.product_id
         WHERE 1 = 1
             AND pd.uid = #{uid}
         <include refid="productOrder" />
@@ -179,18 +179,18 @@
             , fu.name      AS user_name
         FROM flio.product pd
         INNER JOIN flio.flio_user fu ON pd.target_uid = fu.uid
-        LEFT JOIN favorite f ON pd.uid = f.uid AND pd.product_id = f.product_id
+        LEFT JOIN favorite f ON f.uid = #{uid} AND pd.product_id = f.product_id
         WHERE 1 = 1
         AND pd.target_uid = #{targetUid}
         <include refid="productOrder" />
     </select>
 
     <!-- 메인페이지 -->
-    <select id="mainProduct" resultType="kr.co.api.manager.db.board.model.ProductModel">
+    <select id="mainProduct" parameterType="String" resultType="kr.co.api.manager.db.board.model.ProductModel">
         SELECT
             <include refid="productField" />
         FROM flio.product pd
-        LEFT JOIN favorite f ON pd.uid = f.uid AND pd.product_id = f.product_id
+        LEFT JOIN favorite f ON f.uid = #{uid} AND pd.product_id = f.product_id
         WHERE 1 = 1
         <include refid="productOrder" />
     </select>
@@ -200,7 +200,7 @@
         SELECT
             <include refid="productField" />
         FROM flio.product pd
-        LEFT JOIN favorite f ON pd.uid = f.uid AND pd.product_id = f.product_id
+        LEFT JOIN favorite f ON f.uid = #{uid} AND pd.product_id = f.product_id
         WHERE 1 = 1
             AND pd.category_depth1 = #{categoryDepth1}
             <if test="categoryDepth2 != null">
@@ -217,7 +217,7 @@
             , fu.name      AS user_name
         FROM flio.product pd
         INNER JOIN flio.flio_user fu ON pd.uid = fu.uid
-        LEFT JOIN favorite f ON pd.uid = f.uid AND pd.product_id = f.product_id
+        LEFT JOIN favorite f ON f.uid = #{uid} AND pd.product_id = f.product_id
         WHERE 1 = 1
             AND pd.product_id = #{productId}
     </select>
@@ -227,7 +227,7 @@
         SELECT
             <include refid="productField" />
         FROM flio.product pd
-        LEFT JOIN favorite f ON pd.uid = f.uid AND pd.product_id = f.product_id
+        LEFT JOIN favorite f ON f.uid = #{uid} AND pd.product_id = f.product_id
         WHERE 1 = 1
             AND pd.product_id != #{productId}
             AND pd.purpose IN
@@ -243,7 +243,7 @@
         SELECT
             <include refid="productField" />
         FROM flio.product pd
-        LEFT JOIN favorite f ON pd.uid = f.uid AND pd.product_id = f.product_id
+        LEFT JOIN favorite f ON f.uid = #{uid} AND pd.product_id = f.product_id
         WHERE 1 = 1
             AND
                 (
