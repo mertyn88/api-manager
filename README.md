@@ -12,7 +12,10 @@ __`SpringBoot`__
 > * Was : Tomcat
 > * Port : 8080
 
-# 적용 기능
+# Api Swagger hub url
+> https://app.swaggerhub.com/apis/mertyn88/api-manager/1.4
+
+# 적용 기능 ( 주요 기능 몇몇만 정의 )
 __`Firebase`__ 토큰 저장 기능  
 `${BASE_URL}/user/insertUser`
 ```json
@@ -188,8 +191,29 @@ __`검색엔진(Elasticsearch) 카테고리`__ Aggregation
 
 
 __`검색엔진(Elasticsearch) 검색`__ Normal Search  
-> 구현 예정
-
+${BASE_URL}/search/keyword
+```json
+{
+  "query": "음악감상용 오디오 구입을 위한 입문서"
+}
+```
+```json
+{
+  "data": [
+    {
+      "targetUrl": "https://post.naver.com/viewer/postView.nhn?volumeNo=16725706&memberNo=12309435&searchRank=149",
+      "baseUrl": "naver.com",
+      "title": "입문용 스피커의 품위를 한단계 올려놓다 - 미션 QX 시리즈 북쉘프스피커",
+      "content": "전세계에서 <HS>입문</HE>용 <HS>오디오</HE> 제품에 대한 치열한 경쟁이 이어지고 있다. 그리고 최근 몇년 사이에 <HS>음악</HE>을 <HS>감상</HE>하기 <HS>위한</HE> 방식도 많이 바뀌어서 전체 <HS>오디오</HE> 사용량 중에서 추가로 앰프를 <HS>구입</HE>해야 하는 패시브스피커의 사용량도 줄어드는 추세다. 그렇지만, 전체 <HS>오디오</HE> 이용자는 분명히",
+      "keyword": "음악감상용 오디오 구입을 위한 입문서",
+      "regDate": "2020-08-30T15:04:13.000Z",
+      "imageUrl": "naver_post/8D1GAuyrEPAMVBo5CB40v1ITNypPCEAl",
+      "query": null
+    }
+  ]
+}
+```
+> \<HS>, \<HE>로 하이라이팅 하여 검색결과를 보여준다  
 
 __`crawler-manager 임시 저장`__  
 ${BASE_URL}/temporary/save , view  
